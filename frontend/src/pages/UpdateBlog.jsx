@@ -67,7 +67,7 @@ const UpdateBlog = () => {
   const fetchBlog = async () => {
     try {
       setIsFetchingBlog(true);
-      const res = await axios.get(`http://localhost:8015/blog/${id}`, {
+      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/${id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
         },
@@ -148,7 +148,7 @@ const UpdateBlog = () => {
     try {
       setLoading(true);
       const res = await axios.put(
-        `http://localhost:8015/blog/${id}`,
+        `https://blogenzoauthelite.onrender.com/blog/${id}`,
         formData,
         {
           headers: {
@@ -177,7 +177,7 @@ const UpdateBlog = () => {
     const newPublishState = !publish;
     try {
       const res = await axios.patch(
-        `http://localhost:8015/blog/${id}/publish?publish=${newPublishState}`,
+        `https://blogenzoauthelite.onrender.com/blog/${id}/publish?publish=${newPublishState}`,
         null,
         {
           headers: {
@@ -219,7 +219,7 @@ const UpdateBlog = () => {
 
     try {
       const res = await axios.delete(
-        `http://localhost:8015/blog/delete/${blogToDelete.id}`,
+        `https://blogenzoauthelite.onrender.com/blog/delete/${blogToDelete.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

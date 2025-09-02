@@ -38,7 +38,7 @@ const VerifyOTP = () => {
 
     try {
       setIsLoading(true)
-      const res = await axios.post(`http://localhost:8015/user/verify-otp/${email}`, {
+      const res = await axios.post(`https://blogenzoauthelite.onrender.com/user/verify-otp/${email}`, {
         otp: finalOtp,
       })
       setSuccessMessage(res.data.message)

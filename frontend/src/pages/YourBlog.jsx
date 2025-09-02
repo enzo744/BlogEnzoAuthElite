@@ -74,7 +74,7 @@ const YourBlog = () => {
     setIsSearching(true);
 
     try {
-      let url = `http://localhost:8015/blog/search?q=${encodeURIComponent(searchQuery || "")}`;
+      let url = `https://blogenzoauthelite.onrender.com/blog/search?q=${encodeURIComponent(searchQuery || "")}`;
       if (publishedFilter === "true" || publishedFilter === "false") {
         url += `&published=${publishedFilter}`;
       }
@@ -109,7 +109,7 @@ const YourBlog = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:8015/blog/get-own-blogs?page=${currentPage}&limit=${ITEMS_PER_PAGE}`,
+        `https://blogenzoauthelite.onrender.com/blog/get-own-blogs?page=${currentPage}&limit=${ITEMS_PER_PAGE}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           withCredentials: true,
@@ -137,7 +137,7 @@ const YourBlog = () => {
   const handleConfirmDelete = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8015/blog/delete/${blogToDelete.id}`,
+        `https://blogenzoauthelite.onrender.com/blog/delete/${blogToDelete.id}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           withCredentials: true,

@@ -29,7 +29,7 @@ const ForgotPassword = () => {
         e.preventDefault()
         try {
             setIsLoading(true)
-            const res = await axios.post(`http://localhost:8015/user/forgot-password`, {
+            const res = await axios.post(`https://blogenzoauthelite.onrender.com/user/forgot-password`, {
                 email
             });
             if(res.data.success){

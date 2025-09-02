@@ -35,7 +35,7 @@ const BlogView = () => {
     try {
       // const action = liked ? "dislike" : "like";
       const res = await axios.get(
-        `http://localhost:8015/blog/${selectedBlog?._id}`,
+        `https://blogenzoauthelite.onrender.com/blog/${selectedBlog?._id}`,
         {
             headers: {
               Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui

@@ -15,9 +15,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = process.env.FRONTEND_ORIGIN.split(",");
+// const allowedOrigins = process.env.FRONTEND_ORIGIN.split(",");
  app.use(cors({
-     origin: allowedOrigins,
+     origin: "https://blogenzoauthelite.onrender.com",
      credentials: true,
  }));
 
@@ -27,9 +27,9 @@ app.use('/user', userRoute);
 app.use("/blog", blogRoute);
 
 app.use(express.static(path.join(_dirname, "/frontend/dist")));
-//  app.get("*", (_, res)=>{
-//     res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"))
-//  });
+ app.get("*", (_, res)=>{
+    res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"))
+ });
 
 app.listen(PORT, () => {
   connectDB();

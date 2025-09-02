@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
         try {
             setIsLoading(true)
-            const res = await axios.post(`http://localhost:8015/user/change-password/${email}`, {
+            const res = await axios.post(`https://blogenzoauthelite.onrender.com/user/change-password/${email}`, {
                 newPassword,
                 confirmPassword
             })

@@ -29,7 +29,7 @@
 //       setLoading(true);
 //       try {
 //         const res = await axios.get(
-//           `http://localhost:8015/blog/search?q=${query}&published=${published || ""}`,
+//           `https://blogenzoauthelite.onrender.com/blog/search?q=${query}&published=${published || ""}`,
 //           {
 //             headers: { Authorization: `Bearer ${accessToken}` },
 //             withCredentials: true,

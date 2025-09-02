@@ -43,7 +43,7 @@ const RecentBlog = () => {
     const getAllPublsihedBlogs = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8015/blog/get-published-blogs`,
+          `https://blogenzoauthelite.onrender.com/blog/get-published-blogs`,
           { withCredentials: true }
         );
         if (res.data.success) {

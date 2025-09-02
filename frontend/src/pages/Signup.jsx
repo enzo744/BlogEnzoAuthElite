@@ -66,7 +66,7 @@ const Signup = () => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `http://localhost:8015/user/register`,
+        `https://blogenzoauthelite.onrender.com/user/register`,
         formData,
         {
           headers: {

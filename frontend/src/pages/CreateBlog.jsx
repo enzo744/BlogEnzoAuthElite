@@ -81,7 +81,7 @@ const CreateBlog = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:8015/blog`,
+        `https://blogenzoauthelite.onrender.com/blog`,
         { title, category },
         {
           headers: {

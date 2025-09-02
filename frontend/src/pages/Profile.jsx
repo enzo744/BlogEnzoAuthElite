@@ -73,7 +73,7 @@ const Profile = () => {
     try {
       setLoading(true);
       const res = await axios.put(
-        `http://localhost:8015/user/profile/update`,
+        `https://blogenzoauthelite.onrender.com/user/profile/update`,
         formData,
         {
           headers: {
@@ -107,7 +107,7 @@ const Profile = () => {
       try {
         setDeleting(true);
         const res = await axios.delete(
-          `http://localhost:8015/user/profile/delete`,
+          `https://blogenzoauthelite.onrender.com/user/profile/delete`,
           {
             withCredentials: true,
           }
