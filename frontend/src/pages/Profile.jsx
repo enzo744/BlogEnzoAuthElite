@@ -2,9 +2,8 @@ import React from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import userLogo from "../assets/user.jpg";
-import { FaFacebook, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { Label } from "@/components/ui/label";
 import {
   Dialog,
@@ -24,7 +23,7 @@ import { toast } from "sonner";
 import { getData } from "@/context/userContext";
 
 const Profile = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate(); // Inizializza useNavigate
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -65,7 +64,7 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("username", input.username);
     formData.append("bio", input.bio);
-    if (input.file) {
+    if (input?.file) {
       formData.append("file", input?.file);
     }
 
@@ -114,7 +113,8 @@ const Profile = () => {
         );
         if (res.data.success) {
           toast.success(res.data.message);
-          dispatch(getData()); // Svuota lo stato dell'utente in Redux
+          // dispatch(getData()); // Svuota lo stato dell'utente in Redux
+          getData(setUser(null));
           navigate("/login"); // Reindirizza l'utente alla pagina di login
         }
       } catch (error) {
