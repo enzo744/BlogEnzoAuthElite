@@ -127,17 +127,17 @@ const BlogView = () => {
           </div>
         </div>
 
-        {/* Featured Image */}
-        <div className="mb-6 rounded-lg md:w-[760px] overflow-hidden">
-          <img
-            src={selectedBlog?.thumbnail}
-            alt="Next.js Development"
-            className="w-fit object-scale-down "
-          />
-          <span className="">
-            {selectedBlog.subtitle}
-          </span>
-        </div>
+        {/* Controlla se 'selectedBlog.thumbnail' esiste e non è una stringa vuota */}
+        {selectedBlog?.thumbnail && (
+          <div className="mb-6 rounded-lg md:w-[760px] overflow-hidden">
+            <img
+              src={selectedBlog.thumbnail}
+              alt="Blog Thumbnail" // È meglio usare un alt text più generico
+              className="w-full h-auto object-cover" // Aggiustato per riempire il contenitore
+            />
+          </div>
+        )}
+        <span className="">{selectedBlog.subtitle}</span>
 
         <span
           className="blog-content"
