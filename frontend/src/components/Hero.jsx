@@ -1,4 +1,4 @@
-import blogAbout from '../assets/blog-hero.jpg'
+import blogAbout from '../assets/blog-about.avif'
 import React from 'react'
 import { Button } from './ui/button'
 import { Link } from 'react-router-dom'
