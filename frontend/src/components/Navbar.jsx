@@ -86,7 +86,7 @@ const Navbar = () => {
             <Input
               type="text"
               placeholder="Search"
-              className="border border-gray-700 dark:bg-gray-900 bg-gray-300 w-[300px] hidden md:block"
+              className="border border-gray-700 dark:bg-gray-900 bg-gray-300 hidden md:block"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

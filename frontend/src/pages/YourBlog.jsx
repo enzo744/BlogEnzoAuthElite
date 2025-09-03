@@ -211,7 +211,7 @@ const YourBlog = () => {
             <TableHeader className="overflow-x-auto">
               <TableRow>
                 <TableHead>Titolo</TableHead>
-                <TableHead>Categoria</TableHead>
+                <TableHead className="hidden md:table-cell">Categoria</TableHead>
                 <TableHead className="hidden md:table-cell">Data creazione</TableHead>
                 <TableHead className="hidden md:table-cell">Data modifica</TableHead>
                 <TableHead className="text-center">Azione</TableHead>
@@ -233,7 +233,7 @@ const YourBlog = () => {
                       {item.title}
                     </h1>
                   </TableCell>
-                  <TableCell>{item.category}</TableCell>
+                  <TableCell className="hidden md:table-cell">{item.category}</TableCell>
                   <TableCell>{formatDate(item.createdAt)}</TableCell>
                   <TableCell>{formatDate(item.updatedAt)}</TableCell>
                   <TableCell className="text-center">
