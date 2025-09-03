@@ -210,10 +210,26 @@ const YourBlog = () => {
             </TableCaption>
             <TableHeader className="overflow-x-auto">
               <TableRow>
-                <TableHead>Titolo</TableHead>
-                <TableHead className="hidden md:table-cell">Categoria</TableHead>
-                <TableHead className="hidden md:table-cell">Data creazione</TableHead>
-                <TableHead className="hidden md:table-cell">Data modifica</TableHead>
+                <TableHead>
+                  {/* Replichiamo la struttura del TableCell qui sotto: 
+                    un contenitore flex con un segnaposto della stessa larghezza dell'immagine (w-20)
+                    e poi il testo.
+                  */}
+                  <div className="flex items-center gap-4">
+                    {/* Segnaposto invisibile che occupa lo stesso spazio dell'immagine */}
+                    <div className="w-20 hidden md:block" />
+                    <span>Titolo</span>
+                  </div>
+                </TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Categoria
+                </TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Data creazione
+                </TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Data modifica
+                </TableHead>
                 <TableHead className="text-center">Azione</TableHead>
               </TableRow>
             </TableHeader>
@@ -221,11 +237,15 @@ const YourBlog = () => {
               {blog?.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell className="flex gap-4 items-center">
-                    <img
-                      src={item.thumbnail}
-                      alt=""
-                      className="w-20 rounded-md hidden md:block"
-                    />
+                    {item.thumbnail ? (
+                      <img
+                        src={item.thumbnail}
+                        alt=""
+                        className="w-20 h-12 object-scale-down rounded-md hidden md:block"
+                      />
+                    ) : (
+                      <div className="w-20 h-12 hidden md:block"></div>
+                    )}
                     <h1
                       className="hover:underline cursor-pointer"
                       onClick={() => navigate(`/blogs/${item._id}`)}
@@ -233,9 +253,15 @@ const YourBlog = () => {
                       {item.title}
                     </h1>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">{item.category}</TableCell>
-                  <TableCell className="hidden md:table-cell">{formatDate(item.createdAt)}</TableCell>
-                  <TableCell className="hidden md:table-cell">{formatDate(item.updatedAt)}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {item.category}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {formatDate(item.createdAt)}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {formatDate(item.updatedAt)}
+                  </TableCell>
                   <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger>
