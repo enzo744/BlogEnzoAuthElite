@@ -234,8 +234,8 @@ const YourBlog = () => {
                     </h1>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">{item.category}</TableCell>
-                  <TableCell>{formatDate(item.createdAt)}</TableCell>
-                  <TableCell>{formatDate(item.updatedAt)}</TableCell>
+                  <TableCell className="hidden md:table-cell">{formatDate(item.createdAt)}</TableCell>
+                  <TableCell className="hidden md:table-cell">{formatDate(item.updatedAt)}</TableCell>
                   <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger>
