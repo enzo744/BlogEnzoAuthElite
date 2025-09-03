@@ -67,12 +67,15 @@ const UpdateBlog = () => {
   const fetchBlog = async () => {
     try {
       setIsFetchingBlog(true);
-      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
-        },
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `https://blogenzoauthelite.onrender.com/blog/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
+          },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         const fetchedBlog = res.data.blog;
         setBlogData({
@@ -144,7 +147,6 @@ const UpdateBlog = () => {
       formData.append("file", blogData.thumbnail);
     }
 
-    // const accessToken = localStorage.getItem("accessToken");
     try {
       setLoading(true);
       const res = await axios.put(
@@ -239,6 +241,43 @@ const UpdateBlog = () => {
     } finally {
       setBlogToDelete({ id: null, title: "" });
       setIsDeleteDialogOpen(false);
+    }
+  };
+
+  //  NUOVA FUNZIONE per eliminare la thumbnail
+  const handleRemoveThumbnail = async () => {
+    if (!id) {
+      toast.error("ID del blog non trovato.");
+      return;
+    }
+
+    // Aggiungiamo un loading specifico se vuoi, o usiamo quello globale
+    setLoading(true);
+
+    try {
+      const res = await axios.delete(
+        `https://blogenzoauthelite.onrender.com/blog/${id}/remove-thumbnail`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        // Pulisci l'anteprima e lo stato del file
+        setPreviewThumbnail("");
+        setBlogData((prev) => ({ ...prev, thumbnail: null }));
+      }
+    } catch (error) {
+      console.error("Errore durante la rimozione della thumbnail:", error);
+      toast.error(
+        error.response?.data?.message || "Impossibile rimuovere la thumbnail."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -382,11 +421,23 @@ const UpdateBlog = () => {
                 className="w-fit dark:border-gray-300"
               />
               {previewThumbnail && (
-                <img
-                  src={previewThumbnail}
-                  className="w-64 my-2 rounded"
-                  alt="Blog Thumbnail"
-                />
+                <div className="mt-2 relative w-fit">
+                  <img
+                    src={previewThumbnail}
+                    className="w-64 my-2 rounded"
+                    alt="Blog Thumbnail"
+                  />
+                  {/* 1. NUOVO PULSANTE per rimuovere l'immagine */}
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleRemoveThumbnail}
+                    className="absolute top-2 right-2"
+                    disabled={loading}
+                  >
+                    Rimuovi
+                  </Button>
+                </div>
               )}
             </div>
           </div>

@@ -1,7 +1,5 @@
-import { ArrowRight, Zap } from 'lucide-react'
 import blogAbout from '../assets/blog-hero.jpg'
 import React from 'react'
-import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { Link } from 'react-router-dom'
 import { getData } from '@/context/userContext'

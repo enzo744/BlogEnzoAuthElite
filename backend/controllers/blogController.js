@@ -432,3 +432,51 @@ export const searchBlogs = async (req, res) => {
   }
 };
 
+export const removeThumbnail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await Blog.findById(id);
+
+        if (!blog) {
+            return res.status(404).json({
+                success: false,
+                message: "Blog non trovato.",
+            });
+        }
+        
+        // Controlla se esiste un public_id da eliminare
+        const publicId = blog.thumbnailPublicId;
+        if (!publicId) {
+            return res.status(400).json({
+                success: false,
+                message: "Nessuna thumbnail da rimuovere per questo blog.",
+            });
+        }
+
+        // 1. Elimina l'immagine da Cloudinary
+        const result = await cloudinary.uploader.destroy(publicId);
+
+        if (result.result !== 'ok') {
+            // Se Cloudinary restituisce un errore, non procedere
+            throw new Error("Errore durante l'eliminazione dell'immagine da Cloudinary.");
+        }
+        
+        // 2. Aggiorna il documento nel database
+        blog.thumbnail = "";
+        blog.thumbnailPublicId = "";
+        await blog.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Thumbnail rimossa con successo.",
+        });
+
+    } catch (error) {
+        console.error("Errore nella rimozione della thumbnail:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Errore del server durante la rimozione della thumbnail.",
+        });
+    }
+};
+

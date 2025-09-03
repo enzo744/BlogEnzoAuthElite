@@ -9,6 +9,7 @@ import {
   getOwnBlogs,
   getPublishedBlog,
   getSingleBlog,
+  removeThumbnail,
   searchBlogs,
   togglePublishBlog,
   updateBlog,
@@ -33,5 +34,7 @@ router.route("/").post(isAuthenticated, createBlog);
 router.route("/:blogId/publish").patch(isAuthenticated, togglePublishBlog);
 router.route("/:blogId").put(isAuthenticated, singleUpload, updateBlog);
 router.route("/:blogId").get(isAuthenticated, getSingleBlog);
+router.route("/:id/remove-thumbnail").delete(isAuthenticated, removeThumbnail);
+
 
 export default router;
