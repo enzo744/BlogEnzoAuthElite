@@ -113,7 +113,9 @@ const CreateBlog = () => {
       <Card className="md:p-10 p-4 dark:bg-gray-800">
         <h1 className="text-2xl font-bold">Creiamo un blog</h1>
         <p>
-          Inserisci il titolo e seleziona la categoria per il tuo nuovo blog (campi obbligatori).
+          Inserisci il titolo e seleziona la categoria per il tuo nuovo blog (campi obbligatori). <hr/>
+          Clicca su "Crea" per salvare il tuo blog e sarai reindirizzato in altra pagina <hr/>
+          dove potrai aggiungere altri campi facoltativi e contenuti per tuo blog. 
         </p>
         <div className="mt-5 ">
           <div>

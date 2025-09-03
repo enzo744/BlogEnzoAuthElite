@@ -24,7 +24,7 @@ const ResponsiveMenu = ({ openNav, setOpenNav, logoutHandler }) => {
             <FaUserCircle size={50} className="" />
           )}
           <div>
-            <h1 className="">Hello, {user?.firstName || "User"}</h1>
+            <h1 className="">Hello, {user?.username || "User"}</h1>
             <h1 className="text-sm text-slate-500">Premium User</h1>
           </div>
         </div>

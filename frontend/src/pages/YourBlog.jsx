@@ -74,7 +74,9 @@ const YourBlog = () => {
     setIsSearching(true);
 
     try {
-      let url = `https://blogenzoauthelite.onrender.com/blog/search?q=${encodeURIComponent(searchQuery || "")}`;
+      let url = `https://blogenzoauthelite.onrender.com/blog/search?q=${encodeURIComponent(
+        searchQuery || ""
+      )}`;
       if (publishedFilter === "true" || publishedFilter === "false") {
         url += `&published=${publishedFilter}`;
       }
@@ -191,7 +193,7 @@ const YourBlog = () => {
   };
 
   return (
-    <div className="pb-10 pt-20 md:ml-[320px] h-screen">
+    <div className="pb-10 pt-20 md:ml-[320px] h-screen dark:bg-gray-800">
       <div className="max-w-6xl mx-auto mt-8">
         <SearchBar
           onSearch={handleSearch}
@@ -206,16 +208,16 @@ const YourBlog = () => {
                 ? `I tuoi blog recenti: Totale pagine: ${totalPages} - Totale blogs: ${totalAccounts}`
                 : "Nessun blog creato."}
             </TableCaption>
-            <TableHeader>
+            <TableHeader className="overflow-x-auto">
               <TableRow>
                 <TableHead>Titolo</TableHead>
                 <TableHead>Categoria</TableHead>
-                <TableHead>Data creazione</TableHead>
-                <TableHead>Data modifica</TableHead>
+                <TableHead className="hidden md:table-cell">Data creazione</TableHead>
+                <TableHead className="hidden md:table-cell">Data modifica</TableHead>
                 <TableHead className="text-center">Azione</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="overflow-x-auto">
               {blog?.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell className="flex gap-4 items-center">
@@ -268,7 +270,11 @@ const YourBlog = () => {
         {/* Paginazione */}
         {totalPages > 1 && !isSearching && (
           <div className="flex items-center justify-center mt-4 space-x-2">
-            <Button onClick={() => setCurrentPage(1)} variant="outline" size="sm">
+            <Button
+              onClick={() => setCurrentPage(1)}
+              variant="outline"
+              size="sm"
+            >
               <LuChevronFirst />
             </Button>
             <Button
@@ -298,14 +304,20 @@ const YourBlog = () => {
             )}
 
             <Button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
               variant="outline"
               size="sm"
             >
               <LuChevronRight />
             </Button>
-            <Button onClick={() => setCurrentPage(totalPages)} variant="outline" size="sm">
+            <Button
+              onClick={() => setCurrentPage(totalPages)}
+              variant="outline"
+              size="sm"
+            >
               <LuChevronLast />
             </Button>
           </div>
@@ -315,7 +327,10 @@ const YourBlog = () => {
           <p className="text-center text-gray-500 py-4">Caricamento...</p>
         )}
 
-        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialog
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+        >
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>

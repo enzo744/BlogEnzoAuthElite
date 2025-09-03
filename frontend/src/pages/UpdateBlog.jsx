@@ -252,7 +252,7 @@ const UpdateBlog = () => {
   }
 
   return (
-    <div className="pb-5 px-3 pt-14 md:ml-[280px]">
+    <div className="pb-5 px-3 pt-20 md:ml-[320px]">
       <div className="max-w-6xl mx-auto mt-6">
         <Card className="w-full bg-white dark:bg-gray-800 p-5 space-y-2 ">
           <h1 className="text-4xl font-bold">Informazioni sul blog</h1>

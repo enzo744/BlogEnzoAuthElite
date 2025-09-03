@@ -146,7 +146,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="pt-20 md:ml-[320px] md:h-screen">
+    <div className="pt-20 md:ml-[320px] md:h-screen dark:bg-gray-800">
       <div className="max-w-6xl mx-auto mt-8 ">
         <Card className="flex flex-col items-center gap-6 p-6 md:p-16 dark:bg-gray-800 mx-4 md:mx-0">
           {/* image section */}
