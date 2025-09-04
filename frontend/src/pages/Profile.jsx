@@ -146,35 +146,35 @@ const Profile = () => {
   }
 
   return (
-    <div className="pt-20 md:ml-[320px] md:h-screen dark:bg-gray-800">
-      <div className="max-w-6xl mx-auto mt-8 ">
-        <Card className="flex flex-col items-center gap-6 p-6 md:p-16 dark:bg-gray-800 mx-4 md:mx-0">
+    <div className="pt-18 my-2 md:ml-[300px] md:h-screen dark:bg-gray-800">
+      <div className="max-w-6xl mx-auto mt-1 ">
+        <Card className="flex flex-col items-center gap-4 p-6 md:p-3 dark:bg-gray-800 mx-4 md:mx-0">
           {/* image section */}
           <div className="flex flex-col items-center justify-center ">
-            <Avatar className="w-40 h-40 border-2">
+            <Avatar className="w-35 h-35 border-4">
               <AvatarImage src={user?.photoUrl || userLogo} />
             </Avatar>
           </div>
 
           {/* info section */}
           <div>
-            <h1 className="font-bold text-center md:text-start md:text-4xl text-3xl mb-7">
+            <h1 className="font-bold text-center md:text-4xl text-2xl mb-7">
               Welcome {user?.username}!
             </h1>
             <p className="">
               <span className="font-semibold">Email : </span>
               {user?.email}
             </p>
-            <div className="flex flex-col gap-2 items-start justify-start my-5">
-              <Label className="">Description</Label>
-              <p className="border dark:border-gray-600 p-5  rounded-lg">
+            <div className="flex flex-col gap-0 items-center justify-center my-5 md:flex-row md:items-center md:text-center md:gap-4">
+              <Label className="text-sm">Description</Label>
+              <p className="border dark:border-gray-600 p-2  rounded-md">
                 {user?.bio ||
                   "Sono uno sviluppatore web e creatore di contenuti, specializzato in tecnologie frontend. Quando non scrivo codice, mi trovate a scrivere di tecnologia."}
               </p>
             </div>
 
             {/* Finestra di dialogo per modifica profilo */}
-            <div className="flex gap-4 mt-6 items-center justify-center">
+            <div className="flex flex-col gap-4 mt-6 items-center justify-center md:flex-row">
               <Dialog open={open} onOpenChange={setOpen}>
                 <Button onClick={() => setOpen(true)}>Modifica Profilo</Button>
                 <DialogContent className="md:w-[425px] ">
