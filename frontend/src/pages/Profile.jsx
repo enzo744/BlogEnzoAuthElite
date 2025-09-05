@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
-import { useState, useEffect } from "react";
-// import { useDispatch } from "react-redux";
 import userLogo from "../assets/user.jpg";
 import { Label } from "@/components/ui/label";
 import {
@@ -15,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom"; // Importa useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
@@ -23,9 +21,9 @@ import { toast } from "sonner";
 import { getData } from "@/context/userContext";
 
 const Profile = () => {
-  // const dispatch = useDispatch();
-  const navigate = useNavigate(); // Inizializza useNavigate
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false); // Nuovo stato per il processo di eliminazione
 
@@ -79,14 +77,12 @@ const Profile = () => {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${accessToken}`,
           },
-          
         }
       );
       if (res.data.success) {
         setOpen(false);
         toast.success(res.data.message);
         setUser(res.data.user);
-        // dispatch(getData());
       }
     } catch (error) {
       console.log(error);
@@ -97,35 +93,29 @@ const Profile = () => {
   };
 
   // Funzione per gestire l'eliminazione dell'account
-  const handleDeleteAccount = async () => {
-    if (
-      window.confirm(
-        "Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile."
-      )
-    ) {
-      try {
-        setDeleting(true);
-        const res = await axios.delete(
-          `https://blogenzoauthelite.onrender.com/user/profile/delete`,
-          {
-            withCredentials: true,
-          }
-        );
-        if (res.data.success) {
-          toast.success(res.data.message);
-          // dispatch(getData()); // Svuota lo stato dell'utente in Redux
-          getData(setUser(null));
-          navigate("/login"); // Reindirizza l'utente alla pagina di login
+  const deleteAccount = async () => {
+    try {
+      setDeleting(true);
+      const res = await axios.delete(
+        `https://blogenzoauthelite.onrender.com/user/profile/delete`,
+        {
+          withCredentials: true,
         }
-      } catch (error) {
-        console.error("Errore durante l'eliminazione dell'account:", error);
-        toast.error(
-          error.response?.data?.message ||
-            "Errore durante l'eliminazione dell'account."
-        );
-      } finally {
-        setDeleting(false);
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        getData(setUser(null));
+        navigate("/login");
       }
+    } catch (error) {
+      console.error("Errore durante l'eliminazione dell'account:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Errore durante l'eliminazione dell'account."
+      );
+    } finally {
+      setDeleting(false);
+      setConfirmDeleteOpen(false);
     }
   };
 
@@ -187,11 +177,8 @@ const Profile = () => {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-2 py-4">
-                    {/* <div className="gap-2"> */}
-                    <div className="">
-                      <Label htmlFor="username" className="text-right mb-2">
-                        Username o nome completo
-                      </Label>
+                    <div>
+                      <Label htmlFor="username">Username o nome completo</Label>
                       <Input
                         id="username"
                         name="username"
@@ -202,35 +189,28 @@ const Profile = () => {
                         className="col-span-3 text-gray-500"
                       />
                     </div>
-                    {/* </div> */}
+                    <div>
+                      <Label htmlFor="bio">Description</Label>
+                      <Textarea
+                        id="bio"
+                        name="bio"
+                        value={input.bio}
+                        onChange={changeEventHandler}
+                        placeholder="Enter a description"
+                        className="col-span-3 text-gray-500"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="file">Picture</Label>
+                      <Input
+                        id="file"
+                        type="file"
+                        accept="image/*"
+                        onChange={changeFileHandler}
+                        className="w-[277px]"
+                      />
+                    </div>
                   </div>
-
-                  <div>
-                    <Label htmlFor="name" className="text-right mb-2">
-                      Description
-                    </Label>
-                    <Textarea
-                      id="bio"
-                      value={input.bio}
-                      onChange={changeEventHandler}
-                      name="bio"
-                      placeholder="Enter a description"
-                      className="col-span-3 text-gray-500"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="name" className="text-right mb-2">
-                      Picture
-                    </Label>
-                    <Input
-                      id="file"
-                      type="file"
-                      accept="image/*"
-                      onChange={changeFileHandler}
-                      className="w-[277px]"
-                    />
-                  </div>
-
                   <DialogFooter>
                     {loading ? (
                       <Button>
@@ -243,6 +223,7 @@ const Profile = () => {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
+
               {/* Nuovo pulsante per la modifica della password */}
               <Link to={`/change-password/${user.email}`}>
                 <Button
@@ -252,22 +233,60 @@ const Profile = () => {
                   Modifica Password
                 </Button>
               </Link>
+
               {/* Nuovo pulsante per eliminare l'account */}
               <Button
-                onClick={handleDeleteAccount}
+                onClick={() => setConfirmDeleteOpen(true)}
                 disabled={deleting}
-                className="max-w-fit text-[12px] font-medium text-red-700 hover:text-white hover:bg-red-600 border-b-2 hover:border-red-400
-                bg-red-200 dark:border-white"
+                className="max-w-fit text-[12px] font-medium text-red-700 hover:text-white hover:bg-red-600 border-b-2 hover:border-red-400 bg-red-200 dark:border-white"
               >
                 {deleting ? (
                   <>
                     <Loader2 className="mr-2 w-4 h-4 animate-spin" />
-                    Deleting...
+                    Eliminazione...
                   </>
                 ) : (
                   "Elimina Account"
                 )}
               </Button>
+
+              {/* Dialog Conferma Eliminazione */}
+              <Dialog
+                open={confirmDeleteOpen}
+                onOpenChange={setConfirmDeleteOpen}
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Conferma Eliminazione</DialogTitle>
+                    <DialogDescription>
+                      Sei sicuro di voler eliminare il tuo account? Questa
+                      azione è irreversibile.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setConfirmDeleteOpen(false)}
+                    >
+                      Annulla
+                    </Button>
+                    <Button
+                      onClick={deleteAccount}
+                      disabled={deleting}
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      {deleting ? (
+                        <>
+                          <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                          Eliminazione...
+                        </>
+                      ) : (
+                        "Conferma Eliminazione"
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </Card>
