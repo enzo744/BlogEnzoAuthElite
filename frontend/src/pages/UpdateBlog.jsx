@@ -251,7 +251,6 @@ const UpdateBlog = () => {
       return;
     }
 
-    // Aggiungiamo un loading specifico se vuoi, o usiamo quello globale
     setLoading(true);
 
     try {
@@ -291,8 +290,8 @@ const UpdateBlog = () => {
   }
 
   return (
-    <div className="pb-5 px-3 pt-20 md:ml-[320px]">
-      <div className="max-w-6xl mx-auto mt-6">
+    <div className="pb-5  pt-20 md:ml-[320px] flex-wrap">
+      <div className="max-w-6xl mx-auto mt-6 px-3">
         <Card className="w-full bg-white dark:bg-gray-800 p-5 space-y-2 ">
           <h1 className="text-4xl font-bold">Informazioni sul blog</h1>
           <span className="text-sm">
@@ -338,7 +337,7 @@ const UpdateBlog = () => {
                 name="title"
                 value={blogData.title}
                 onChange={handleChange}
-                className="dark:border-gray-300"
+                className="dark:border-gray-300 text-xs md:text-base"
               />
             </div>
             <div className="flex-1">
@@ -349,7 +348,7 @@ const UpdateBlog = () => {
                 name="subtitle"
                 value={blogData.subtitle}
                 onChange={handleChange}
-                className="dark:border-gray-300"
+                className="dark:border-gray-300 text-xs md:text-base"
               />
             </div>
           </div>
@@ -362,7 +361,7 @@ const UpdateBlog = () => {
                 name="campoLibero"
                 value={blogData.campoLibero}
                 onChange={handleChange}
-                className="dark:border-gray-300"
+                className="dark:border-gray-300 text-xs md:text-base"
               />
             </div>
             <div className="flex-1">
@@ -373,7 +372,7 @@ const UpdateBlog = () => {
                 name="campoLibero2"
                 value={blogData.campoLibero2}
                 onChange={handleChange}
-                className="border-gray-300"
+                className="border-gray-300 text-xs md:text-base"
               />
             </div>
           </div>
@@ -418,13 +417,13 @@ const UpdateBlog = () => {
                 type="file"
                 onChange={selectThumbnail}
                 accept="image/*"
-                className="w-fit dark:border-gray-300"
+                className="w-fit dark:border-gray-300 text-xs md:text-base"
               />
               {previewThumbnail && (
                 <div className="mt-2 relative w-fit">
                   <img
                     src={previewThumbnail}
-                    className="w-64 my-2 rounded"
+                    className="w-64 my-2 rounded text-xs md:text-base"
                     alt="Blog Thumbnail"
                   />
                   {/* 1. NUOVO PULSANTE per rimuovere l'immagine */}
@@ -461,6 +460,7 @@ const UpdateBlog = () => {
         isOpen={openEncryptDecryptModal}
         onClose={() => setOpenEncryptDecryptModal(false)}
         title="Strumento Cripta / Decripta"
+        className="max-w-5xl mx-auto"
       >
         <EncryptDecrypt />
       </Modal>

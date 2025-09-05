@@ -1,5 +1,8 @@
 import { useRef, useState, useEffect } from "react"; // Aggiunto useEffect
 import CryptoJS from "crypto-js";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 const SECRET_PASS = import.meta.env.VITE_SECRET_PASS;
 
@@ -9,7 +12,6 @@ const EncryptDecrypt = () => {
 
   const [screen, setScreen] = useState("encrypt"); // Inizia in modalità cripta
   const [text, setText] = useState(""); // Testo nell'input
-
   const [encryptedData, setEncryptedData] = useState("");
   const [decryptedData, setDecryptedData] = useState("");
 
@@ -78,75 +80,66 @@ const EncryptDecrypt = () => {
   };
 
   return (
-    <div className="p-1 max-w-3xl mx-auto"> {/* Rimosso min-h-screen dalla modale */}
-      <form className="flex flex-col gap-4 items-center">
-        <div className="self-center">
-          <h1 className="text-center text-2xl my-2 font-semibold italic text-slate-600">
-            Encrypt or Decrypt Testo
-          </h1>
-          <div className="flex justify-center">
-            {/* Buttons to switch between Encrypt and Decrypt screens */}
-            <span
-              className={`btn btn-left ${
-                screen === "encrypt" ? "active" : ""
-              } cursor-pointer`}
-              onClick={() => {
-                switchScreen("encrypt");
-              }}
-            >
-              Cripta
-            </span>
-            <span
-              className={`btn btn-right ${
-                screen === "decrypt" ? "active" : ""
-              } cursor-pointer`}
-              onClick={() => {
-                switchScreen("decrypt");
-              }}
-            >
-              Decripta
-            </span>
-          </div>
+    // Usiamo space-y per una spaziatura verticale consistente
+    <div className="w-full space-y-6 p-8 ">
+      <h1 className="text-xl md:text-2xl font-semibold text-center text-foreground dark:text-black">
+        Cripta o Decripta Testo
+      </h1>
 
-          <div className="card">
-            {/* Textarea for user input  */}
-            <textarea
-              ref={textAreaRef}
-              value={text}
-              onChange={({ target }) => setText(target.value)}
-              placeholder={
-                screen === "encrypt"
-                  ? "Inserire testo da criptare... "
-                  : "Inserire testo da DEcriptare..."
-              }
-              className="border rounded w-full p-2"
-            />
+      {/* Segmented Control per Cripta/Decripta costruito con i Button */}
+      <div className="flex w-full rounded-md bg-muted p-2 gap-2 justify-center">
+        <Button
+          variant={screen === "encrypt" ? "secondary" : "ghost"}
+          onClick={() => switchScreen("encrypt")}
+          className="w-1/2 border-2 border-slate-500 hover:text-amber-500"
+        >
+          Cripta
+        </Button>
+        <Button
+          variant={screen === "decrypt" ? "secondary" : "ghost"}
+          onClick={() => switchScreen("decrypt")}
+          className="w-1/2 border-2 border-slate-500 hover:text-amber-500"
+        >
+          Decripta
+        </Button>
+      </div>
 
-            {/* Display error message if there is an error */}
-            {errorMessage && <div className="error">{errorMessage}</div>}
+      {/* Area principale del contenuto */}
+      <div className="space-y-3 text-xs  dark:text-black">
+        <Textarea
+          ref={textAreaRef}
+          value={text}
+          onChange={({ target }) => setText(target.value)}
+          placeholder={
+            screen === "encrypt"
+              ? "Inserire testo da criptare..."
+              : "Inserire testo da decriptare..."
+          }
+          rows={6} // Diamo un'altezza adeguata
+          className="dark:border-gray-300"
+        />
 
-            {/* Encrypt or Decrypt button */}
-            <span
-              className={`btn submit-btn ${
-                screen === "encrypt" ? "encrypt-btn" : "decrypt-btn"
-              } cursor-pointer`}
-              onClick={handleClick}
-            >
-              {screen === "encrypt" ? "Encrypt" : "Decript"}
-            </span>
-          </div>
+        {errorMessage && (
+          <p className="text-sm text-red-500 text-center">{errorMessage}</p>
+        )}
 
-          {/* Display Encrypted or Decrypted data if available */}
-          {encryptedData || decryptedData ? (
-            <div className="content">
-              <label className="text-blue-600">
-                {screen === "encrypt" ? "Dati Criptati" : "Dati Decriptati"} DATA:
-              </label>
-              <p className="break-words">{screen === "encrypt" ? encryptedData : decryptedData}</p>
-            </div>
-          ) : null}
+        <Button onClick={handleClick} className="w-full">
+          {screen === "encrypt" ? "Cripta Testo" : "Decripta Testo"}
+        </Button>
+      </div>
+
+
+      {/* Sezione per mostrare il risultato */}
+      {(encryptedData || decryptedData) && (
+        <div className="w-full space-y-2 rounded-md border bg-slate-50 p-4 dark:bg-slate-800">
+          <Label className="text-blue-600 dark:text-blue-400">
+            {screen === "encrypt" ? "Dati Criptati" : "Dati Decriptati"}
+          </Label>
+          <p className="break-words text-sm font-mono text-muted-foreground">
+            {screen === "encrypt" ? encryptedData : decryptedData}
+          </p>
         </div>
-      </form>
+      )}
     </div>
   );
 };
