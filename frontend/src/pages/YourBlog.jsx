@@ -193,8 +193,8 @@ const YourBlog = () => {
   };
 
   return (
-    <div className="pb-10 pt-20 md:ml-[320px] h-screen dark:bg-gray-800">
-      <div className="max-w-6xl mx-auto mt-8">
+    <div className="pb-10 pt-15 md:ml-[320px] h-screen dark:bg-gray-800">
+      <div className="max-w-6xl mx-auto mt-8 px-4">
         <SearchBar
           onSearch={handleSearch}
           onReset={handleReset}

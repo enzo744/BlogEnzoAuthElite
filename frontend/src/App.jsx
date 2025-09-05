@@ -88,6 +88,7 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <Profile />
+        <Footer />
       </>
     ),
   },
