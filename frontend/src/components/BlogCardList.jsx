@@ -1,16 +1,17 @@
 const BlogCardList = ({ blog }) => {
-  // const navigate = useNavigate()
   const date = new Date(blog.createdAt);
   const formattedDate = date.toLocaleDateString("it-IT");
 
   return (
     <div className="bg-sky-50 dark:bg-gray-700 dark:border-gray-600 flex flex-col md:flex-row md:gap-10 p-5 rounded-2xl mt-6 shadow-lg border  transition-all">
       <div>
-        <img
-          src={blog.thumbnail}
-          alt=""
-          className="rounded-lg md:w-[300px] hover:scale-105 transition-all"
-        />
+        {blog.thumbnail ? (
+          <img
+            src={blog.thumbnail}
+            alt="Anteprima blog"
+            className="rounded-lg md:w-[300px] hover:scale-105 transition-all"
+          />
+        ) : null}
         <p className="text-xs  mt-2">
           By {blog.author?.username} | {blog.category} | {formattedDate}
         </p>

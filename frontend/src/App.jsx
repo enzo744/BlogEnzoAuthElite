@@ -20,6 +20,7 @@ import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import YourBlog from "./pages/YourBlog";
 import UpdateBlog from "./pages/UpdateBlog";
+import SearchResults from "./pages/SearchResults";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,16 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <About />
+        <Footer />
+      </>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <>
+        <Navbar />
+        <SearchResults />
         <Footer />
       </>
     ),

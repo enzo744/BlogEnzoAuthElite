@@ -137,6 +137,7 @@ const YourBlog = () => {
   }, [currentPage]);
 
   const handleConfirmDelete = async () => {
+     if (!blogToDelete.id) return;
     try {
       const res = await axios.delete(
         `https://blogenzoauthelite.onrender.com/blog/delete/${blogToDelete.id}`,

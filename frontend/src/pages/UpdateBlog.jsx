@@ -212,7 +212,6 @@ const UpdateBlog = () => {
     // ✅ Usa l'ID salvato nello stato 'blogToDelete'
     if (!blogToDelete.id) return;
 
-    // const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       console.error("Token di accesso non trovato.");
       toast.error("Utente non autenticato. Effettua il login.");

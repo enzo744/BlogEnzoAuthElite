@@ -24,6 +24,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import userLogo from "../assets/user.jpg";
 import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
+import { CiBoxList } from "react-icons/ci";
 
 const Navbar = () => {
   const { user, setUser } = getData();
@@ -109,6 +110,8 @@ const Navbar = () => {
             </NavLink>
             <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Crea Blog</li></NavLink>
             <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Lista Blog</li></NavLink>
+            {/* NUOVO LINK AGGIUNTO QUI */}
+            <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Vista Tabellare</li></NavLink>
           </ul>
           <div className="flex">
             <Button onClick={() => dispatch(toggleTheme())}>
@@ -142,6 +145,14 @@ const Navbar = () => {
                         <span>Your Blog</span>
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                       </DropdownMenuItem>
+
+                      {/* NUOVO LINK AGGIUNTO ANCHE QUI */}
+                       <DropdownMenuItem
+                         onClick={() => navigate("/dashboard/vista-tabellare")}
+                       >
+                         <CiBoxList />
+                         <span>Vista Tabellare</span>
+                       </DropdownMenuItem>
                       
                       <DropdownMenuItem
                         onClick={() => navigate("/dashboard/write-blog")}
