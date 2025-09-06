@@ -25,7 +25,7 @@ const SearchResults = () => {
 
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:8015/blog/search", {
+        const res = await axios.get("https://blogenzoauthelite.onrender.com/blog/search", {
           headers: { Authorization: `Bearer ${accessToken}` },
           params: {
             q: query || "",
