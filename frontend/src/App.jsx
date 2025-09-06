@@ -156,6 +156,10 @@ const router = createBrowserRouter([
         path: "profile",
         element: <Profile />,
       },
+      {
+        path: "vista-tabellare",
+        element: <VistaTabellare />,
+      },
     ],
   },
   {
