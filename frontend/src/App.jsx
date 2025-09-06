@@ -21,6 +21,7 @@ import Dashboard from "./pages/Dashboard";
 import YourBlog from "./pages/YourBlog";
 import UpdateBlog from "./pages/UpdateBlog";
 import SearchResults from "./pages/SearchResults";
+import VistaTabellare from "./pages/VistaTabellare";
 
 const router = createBrowserRouter([
   {
