@@ -17,14 +17,14 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 
-import { FaMoon, FaRegEdit, FaSun } from "react-icons/fa";
+import { FaMoon, FaRegListAlt, FaSun } from "react-icons/fa";
 import { toggleTheme } from "../redux/themeSlice";
 import ResponsiveMenu from "./ResponsiveMenu";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import userLogo from "../assets/user.jpg";
 import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
-import { CiBoxList } from "react-icons/ci";
+import { LuFilePlus2 } from "react-icons/lu";
 
 const Navbar = () => {
   const { user, setUser } = getData();
@@ -39,7 +39,7 @@ const Navbar = () => {
   const logoutHandler = async () => {
     try {
       const res = await axios.post(
-        `https://blogenzoauthelite.onrender.com/user/logout`,
+        `http://localhost:8015/user/logout`,
         {},
         {
           headers: {
@@ -87,7 +87,7 @@ const Navbar = () => {
             <Input
               type="text"
               placeholder="Search"
-              className="border border-gray-700 dark:bg-gray-900 bg-gray-300 hidden md:block"
+              className="border border-gray-700 dark:bg-gray-900 bg-gray-300  hidden md:block"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -110,7 +110,7 @@ const Navbar = () => {
             </NavLink>
             <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Crea Blog</li></NavLink>
             <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Lista Blog</li></NavLink>
-            {/* NUOVO LINK AGGIUNTO QUI */}
+            {/* 👇 NUOVO LINK AGGIUNTO QUI 👇 */}
             <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Vista Tabellare</li></NavLink>
           </ul>
           <div className="flex">
@@ -142,23 +142,24 @@ const Navbar = () => {
                         onClick={() => navigate("/dashboard/your-blog")}
                       >
                         <ChartColumnBig />
-                        <span>Your Blog</span>
+                        <span>I Miei Blogs</span>
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                       </DropdownMenuItem>
 
-                      {/* NUOVO LINK AGGIUNTO ANCHE QUI */}
+                      {/* 👇 NUOVO LINK AGGIUNTO ANCHE QUI 👇 */}
                        <DropdownMenuItem
                          onClick={() => navigate("/dashboard/vista-tabellare")}
                        >
-                         <CiBoxList />
-                         <span>Vista Tabellare</span>
+                         <FaRegListAlt />
+                         <span>Lista Blogs</span>
+                         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                        </DropdownMenuItem>
                       
                       <DropdownMenuItem
                         onClick={() => navigate("/dashboard/write-blog")}
                       >
-                        <FaRegEdit />
-                        <span>Write Blog</span>
+                        <LuFilePlus2 />
+                        <span>Nuovo Blog</span>
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>

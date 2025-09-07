@@ -1,8 +1,7 @@
-import { ChartColumnBig, FolderPlus, SquareUser } from 'lucide-react'
-// import { LiaCommentSolid } from "react-icons/lia";
-// import React from 'react'
+import { ChartColumnBig, SquareUser } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
-import { FaEdit, FaRegEdit } from 'react-icons/fa';
+import { FaRegListAlt } from 'react-icons/fa';
+import { LuFilePlus2 } from "react-icons/lu";
 
 const Sidebar = () => {
   return (
@@ -10,15 +9,19 @@ const Sidebar = () => {
       <div className='text-center pt-10 px-3 space-y-2'>
         <NavLink to='/dashboard/profile' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
           <SquareUser />
-          <span>Profile</span>
+          <span>Profilo</span>
         </NavLink>
         <NavLink to='/dashboard/your-blog' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
           <ChartColumnBig />
-          <span>Your Blogs</span>
+          <span>I Miei Blogs</span>
+        </NavLink>
+        <NavLink to='/dashboard/vista-tabellare' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
+          <FaRegListAlt />
+          <span>Lista Blogs</span>
         </NavLink>
         <NavLink to='/dashboard/write-blog' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
-          <FaRegEdit/>
-          <span>Create Blog</span>
+          <LuFilePlus2/>
+          <span>Nuovo Blog</span>
         </NavLink>
       </div>
 
