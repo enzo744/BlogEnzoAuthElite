@@ -98,7 +98,7 @@ const Navbar = () => {
         </div>
         {/* nav section */}
         <nav className="flex md:gap-5 gap-4 items-center">
-          <ul className="hidden xl:flex gap-7 items-center text-xl font-semibold">
+          <ul className="hidden xl:flex gap-7 items-center text-md">
             <NavLink to={"/"} className="cursor-pointer">
               <li>Home</li>
             </NavLink>
