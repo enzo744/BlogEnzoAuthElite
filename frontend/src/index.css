@@ -171,7 +171,19 @@ textarea {
 textarea::placeholder {
   color: blue;
 }
-/* Submit button styles */
+.custom-textarea {
+  background-color: white;
+  color: black;
+  border: 1px solid #d2e4fa;
+  font-size: 0.9rem;
+}
+
+.dark .custom-textarea {
+  background-color: #1f2937; /* Tailwind dark: gray-800 */
+  color: white;
+  border: 1px solid #4b5563; /* Tailwind dark: gray-600 */
+}/* Submit button styles */
+
 .submit-btn {
   border-radius: 0.4rem;
   margin-top: 0.4rem;

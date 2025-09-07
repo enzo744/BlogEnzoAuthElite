@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -12,7 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import JoditEditor from "jodit-react";
+import { Textarea } from "@/components/ui/textarea";
+// import JoditEditor from "jodit-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -32,10 +33,11 @@ import {
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { getData } from "@/context/userContext";
+// import RichTextEditor from "@/components/RichTextEditor";
 
 const UpdateBlog = () => {
   getData();
-  const editor = useRef(null);
+  // const editor = useRef(null);
 
   const [blogToDelete, setBlogToDelete] = useState({ id: null, title: "" });
   const accessToken = localStorage.getItem("accessToken");
@@ -52,7 +54,7 @@ const UpdateBlog = () => {
   const dispatch = useDispatch();
   const { blog } = useSelector((store) => store.blog);
 
-  const [content, setContent] = useState("");
+  // const [content, setContent] = useState("");
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const [blogData, setBlogData] = useState({
     title: "",
@@ -67,15 +69,12 @@ const UpdateBlog = () => {
   const fetchBlog = async () => {
     try {
       setIsFetchingBlog(true);
-      const res = await axios.get(
-        `https://blogenzoauthelite.onrender.com/blog/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
+        },
+        withCredentials: true,
+      });
       if (res.data.success) {
         const fetchedBlog = res.data.blog;
         setBlogData({
@@ -86,7 +85,7 @@ const UpdateBlog = () => {
           campoLibero: fetchedBlog.campoLibero || "",
           campoLibero2: fetchedBlog.campoLibero2 || "",
         });
-        setContent(fetchedBlog.description || "");
+        // setContent(fetchedBlog.description || "");
         setPreviewThumbnail(fetchedBlog.thumbnail || "");
         setPublish(fetchedBlog.isPublished || false);
       }
@@ -138,7 +137,7 @@ const UpdateBlog = () => {
     const formData = new FormData();
     formData.append("title", blogData.title);
     formData.append("subtitle", blogData.subtitle);
-    formData.append("description", content);
+    formData.append("description", blogData.description);
     formData.append("category", blogData.category);
     formData.append("campoLibero", blogData.campoLibero);
     formData.append("campoLibero2", blogData.campoLibero2);
@@ -209,7 +208,7 @@ const UpdateBlog = () => {
   };
 
   const handleConfirmDelete = async () => {
-    // ✅ Usa l'ID salvato nello stato 'blogToDelete'
+    //  Usa l'ID salvato nello stato 'blogToDelete'
     if (!blogToDelete.id) return;
 
     if (!accessToken) {
@@ -377,11 +376,13 @@ const UpdateBlog = () => {
           </div>
           <div>
             <Label className="mb-2">Description</Label>
-            <JoditEditor
-              ref={editor}
-              value={content}
-              onChange={(newContent) => setContent(newContent)}
-              className="jodit_toolbar"
+            <Textarea
+              id="description"
+              name="description"
+              value={blogData.description}
+              onChange={handleChange}
+              className="custom-textarea dark:custom-textarea"
+              // rows={4}
             />
           </div>
           <div>
