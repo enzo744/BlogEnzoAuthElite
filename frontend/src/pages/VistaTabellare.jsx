@@ -27,7 +27,7 @@ const VistaTabellare = () => {
   const fetchAllBlogs = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/get-all-blogs`, {
+      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/get-own-blogs`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
