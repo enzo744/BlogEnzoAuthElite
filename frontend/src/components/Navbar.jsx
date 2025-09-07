@@ -108,10 +108,10 @@ const Navbar = () => {
             <NavLink to={"/about"} className={`cursor-pointer`}>
               <li>About</li>
             </NavLink>
-            <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Crea Blog</li></NavLink>
-            <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Lista Blog</li></NavLink>
+            <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Nuovo Blog</li></NavLink>
+            <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Miei Blogs</li></NavLink>
             {/* 👇 NUOVO LINK AGGIUNTO QUI 👇 */}
-            <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Vista Tabellare</li></NavLink>
+            <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Lista Blogs</li></NavLink>
           </ul>
           <div className="flex">
             <Button onClick={() => dispatch(toggleTheme())}>
