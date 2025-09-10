@@ -411,7 +411,7 @@ export const searchBlogs = async (req, res) => {
     }
 
     const blogs = await Blog.find(searchConditions)
-      .sort({ createdAt: -1 })
+      .sort({ title: 1 })
       .populate({
         path: "author",
         select: "username photoUrl",
