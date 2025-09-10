@@ -284,7 +284,7 @@ export const getOwnBlogs = async (req, res) => {
     const total = await Blog.countDocuments({ author: userId });
 
     const blogs = await Blog.find({ author: userId })
-      .sort({ updatedAt: -1 })
+      .sort({ title: 1 })
       .skip(skip)
       .limit(limit)
       .populate({
