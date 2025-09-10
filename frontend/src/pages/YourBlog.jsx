@@ -194,21 +194,20 @@ const YourBlog = () => {
   };
 
   return (
-    <div className="pb-10 pt-15 md:ml-[320px] h-screen dark:bg-gray-800">
-      <div className="max-w-6xl mx-auto mt-8 px-4">
-        <SearchBar
+    <div className="pb-10 pt-15 md:ml-[320px] h-full min-h-screen dark:bg-gray-700">
+      <div className="max-w-6xl mx-auto mt-8 px-4 ">
+        <SearchBar 
           onSearch={handleSearch}
           onReset={handleReset}
           resetSignal={resetSignal}
         />
-
         <Card className="w-full p-5 space-y-2 dark:bg-gray-800">
-          <Table>
             <TableCaption className="text-xl">
               {blog?.length > 0
-                ? `I tuoi blog recenti: Totale pagine: ${totalPages} - Totale blogs: ${totalAccounts}`
+                ? `Pagine: ${totalPages} - Totale blogs: ${totalAccounts}`
                 : "Nessun blog creato."}
             </TableCaption>
+          <Table>
             <TableHeader className="overflow-x-auto">
               <TableRow>
                 <TableHead>
@@ -354,6 +353,7 @@ const YourBlog = () => {
           <p className="text-center text-gray-500 py-4">Caricamento...</p>
         )}
 
+        {/* Eliminazione */}
         <AlertDialog
           open={isDeleteDialogOpen}
           onOpenChange={setIsDeleteDialogOpen}

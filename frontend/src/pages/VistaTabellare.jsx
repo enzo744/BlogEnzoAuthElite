@@ -65,9 +65,8 @@ const VistaTabellare = () => {
   }
 
   return (
-    <div className="pb-10 pt-20 md:ml-[320px] min-h-screen dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto mt-8 px-4">
-        {/* 1. MESSAGGIO MOBILE */}
+    <div className="pt-20 md:ml-[320px] h-screen flex flex-col dark:bg-gray-700">
+      <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
         <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
             Pagina visibile solo su PC o Tablet
@@ -75,13 +74,17 @@ const VistaTabellare = () => {
         </div>
 
         {/* 2. CONTENUTO PRINCIPALE SOLO SU TABLET E DESKTOP */}
-        <div className="hidden md:block">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold">Vista Tabellare</h1>
-            <Button onClick={() => setIsModalOpen(true)}>
-              <LockKeyhole className="mr-2 h-4 w-4" />
-              Cripta/Decripta
-            </Button>
+        <div className="hidden md:flex md:flex-col md:flex-grow overflow-hidden">
+          <div className="flex-shrink-0 py-6">
+            <div className="flex justify-between items-center">
+              <h1 className="text-2xl md:text-3xl font-bold">
+                Vista Tabellare
+              </h1>
+              <Button onClick={() => setIsModalOpen(true)}>
+                <LockKeyhole className="mr-2 h-4 w-4" />
+                Cripta/Decripta
+              </Button>
+            </div>
           </div>
 
           {/* 👇 MODIFICA PRINCIPALE:
@@ -89,23 +92,32 @@ const VistaTabellare = () => {
               - Le classi della Card (p-5, rounded-md, border, etc.) sono state applicate a questo div.
               - Questo div è ora sia il contenitore di stile CHE il contenitore scorrevole.
           */}
+          <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
+            {filteredBlogs.length > 0
+              ? `Panoramica dei tuoi blog con campi liberi compilati: ${
+                  filteredBlogs.length
+                } blog${filteredBlogs.length > 1 ? "s" : ""}`
+              : "Nessun blog trovato con i campi liberi compilati."}
+          </TableCaption>
+
           <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-card text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
-              <TableCaption className="mt-4">
-                {filteredBlogs.length > 0
-                  ? `Panoramica dei tuoi blog con campi liberi compilati: ${filteredBlogs.length} blog${filteredBlogs.length > 1 ? "s" : ""}`
-                  : "Nessun blog trovato con i campi liberi compilati."}
-              </TableCaption>
-              
               {/* Ora l'intestazione è un figlio diretto del contenitore scorrevole e 'sticky' funzionerà */}
-              <TableHeader className="sticky top-0 bg-card z-10">
+              <TableHeader className="sticky top-0 bg-card z-10  rounded">
                 <TableRow>
                   <TableHead className="w-[20%] font-bold">Titolo</TableHead>
-                  <TableHead className="w-[25%] font-bold">Campo Libero</TableHead>
-                  <TableHead className="w-[49%] font-bold">Campo Libero 2</TableHead>
-                  <TableHead className="w-[6%] text-center font-bold">Modifica</TableHead>
+                  <TableHead className="w-[28%] font-bold">
+                    Campo Libero
+                  </TableHead>
+                  <TableHead className="w-[46%] font-bold">
+                    Campo Libero 2
+                  </TableHead>
+                  <TableHead className="w-[6%] text-center font-bold">
+                    Modifica
+                  </TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
                 {/* Il contenuto della tabella rimane identico */}
                 {filteredBlogs.map((blog) => (
