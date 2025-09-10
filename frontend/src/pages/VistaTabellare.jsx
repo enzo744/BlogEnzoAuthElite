@@ -84,34 +84,42 @@ const VistaTabellare = () => {
             </Button>
           </div>
 
-          <Card className="w-full p-5 space-y-2 dark:bg-gray-800">
+          {/* 👇 MODIFICA PRINCIPALE:
+              - Rimosso il componente <Card>.
+              - Le classi della Card (p-5, rounded-md, border, etc.) sono state applicate a questo div.
+              - Questo div è ora sia il contenitore di stile CHE il contenitore scorrevole.
+          */}
+          <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-card text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
-              <TableCaption>
+              <TableCaption className="mt-4">
                 {filteredBlogs.length > 0
-                  ? "Panoramica dei tuoi blog con campi liberi compilati."
+                  ? `Panoramica dei tuoi blog con campi liberi compilati: ${filteredBlogs.length} blog${filteredBlogs.length > 1 ? "s" : ""}`
                   : "Nessun blog trovato con i campi liberi compilati."}
               </TableCaption>
-              <TableHeader>
+              
+              {/* Ora l'intestazione è un figlio diretto del contenitore scorrevole e 'sticky' funzionerà */}
+              <TableHeader className="sticky top-0 bg-card z-10">
                 <TableRow>
-                  <TableHead className="w-[20%]">Titolo</TableHead>
-                  <TableHead className="w-[25%]">Campo Libero</TableHead>
-                  <TableHead className="w-[49%]">Campo Libero 2</TableHead>
-                  <TableHead className="w-[6%] text-center">Modifica</TableHead>
+                  <TableHead className="w-[20%] font-bold">Titolo</TableHead>
+                  <TableHead className="w-[25%] font-bold">Campo Libero</TableHead>
+                  <TableHead className="w-[49%] font-bold">Campo Libero 2</TableHead>
+                  <TableHead className="w-[6%] text-center font-bold">Modifica</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
+                {/* Il contenuto della tabella rimane identico */}
                 {filteredBlogs.map((blog) => (
                   <TableRow key={blog._id}>
-                    <TableCell className="w-[20%] truncate md:whitespace-normal md:break-words">
+                    <TableCell className="truncate md:whitespace-normal md:break-words">
                       {blog.title}
                     </TableCell>
-                    <TableCell className="w-[25%] truncate md:whitespace-normal md:break-words">
+                    <TableCell className="truncate md:whitespace-normal md:break-words">
                       {blog.campoLibero}
                     </TableCell>
-                    <TableCell className="w-[49%] truncate md:whitespace-normal md:break-words">
+                    <TableCell className="truncate md:whitespace-normal md:break-words">
                       {blog.campoLibero2}
                     </TableCell>
-                    <TableCell className="w-[6%] text-center">
+                    <TableCell className="text-center">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -126,7 +134,7 @@ const VistaTabellare = () => {
                 ))}
               </TableBody>
             </Table>
-          </Card>
+          </div>
         </div>
       </div>
 
