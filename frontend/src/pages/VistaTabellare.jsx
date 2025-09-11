@@ -103,8 +103,8 @@ const VistaTabellare = () => {
           <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-card text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
               {/* Ora l'intestazione è un figlio diretto del contenitore scorrevole e 'sticky' funzionerà */}
-              <TableHeader className="sticky top-0 bg-card z-10  rounded">
-                <TableRow>
+              <TableHeader className="sticky top-0 bg-card z-10  border border-gray-200 dark:border-gray-400">
+                <TableRow className="">
                   <TableHead className="w-[20%] font-bold">Titolo</TableHead>
                   <TableHead className="w-[28%] font-bold">
                     Campo Libero
@@ -112,8 +112,8 @@ const VistaTabellare = () => {
                   <TableHead className="w-[46%] font-bold">
                     Campo Libero 2
                   </TableHead>
-                  <TableHead className="w-[6%] text-center font-bold">
-                    Modifica
+                  <TableHead className="w-[6%]  font-bold">
+                    {/* <FilePenLine className="h-5 w-5 text-amber-500 justify-rightToCenter" /> */}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -122,16 +122,16 @@ const VistaTabellare = () => {
                 {/* Il contenuto della tabella rimane identico */}
                 {filteredBlogs.map((blog) => (
                   <TableRow key={blog._id}>
-                    <TableCell className="truncate md:whitespace-normal md:break-words">
+                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
                       {blog.title}
                     </TableCell>
-                    <TableCell className="truncate md:whitespace-normal md:break-words">
+                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
                       {blog.campoLibero}
                     </TableCell>
-                    <TableCell className="truncate md:whitespace-normal md:break-words">
+                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
                       {blog.campoLibero2}
                     </TableCell>
-                    <TableCell className="text-center">
+                    <TableCell className="text-center border border-gray-200 dark:border-gray-400">
                       <Button
                         variant="ghost"
                         size="icon"
