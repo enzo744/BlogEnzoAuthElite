@@ -1,6 +1,7 @@
 import express from "express";
 import {
   changePassword,
+  deleteUser,
   forgotPassword,
   getAllUsers,
   loginUser,
@@ -23,6 +24,9 @@ router.post("/logout", isAuthenticated, logoutUser);
 
 // ✅ Profile
 router.route("/profile/update").put(isAuthenticated, singleUpload, updateProfile);
+
+// 🗑️ Delete Account, Blogs collegati all'utente e foto profilo e thumbnail
+router.route("/profile/delete").delete(isAuthenticated, deleteUser);
 
 // 🔐 Email Verification & Password
 router.post("/verify", verification);

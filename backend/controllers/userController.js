@@ -1,4 +1,5 @@
 import { User } from "../models/userModel.js";
+import { Blog } from "../models/blogModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { verifyMail } from "../emailVerify/verifyMail.js";
@@ -6,7 +7,6 @@ import { Session } from "../models/sessionModel.js";
 import { sendOtpMail } from "../emailVerify/sendOtpMail.js";
 import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/dataUri.js";
-import axios from "axios";
 
 export const registerUser = async (req, res) => {
   try {
@@ -27,20 +27,6 @@ export const registerUser = async (req, res) => {
       });
     }
 
-     // 🔍 Verifica email reale via Mailboxlayer
-    const access_key = process.env.MAILBOXLAYER_API_KEY;
-    const verifyUrl = `http://apilayer.net/api/check?access_key=${access_key}&email=${email}&smtp=1&format=1`;
-
-    const { data } = await axios.get(verifyUrl);
-
-    // ❌ Email inesistente → NON registrare utente
-    if (!data.smtp_check) {
-      return res.status(200).json({
-        success: false,
-        message: "L'indirizzo email inserito non esiste o non è raggiungibile. L'utente non può essere creato! Inserire una email reale.",
-      });
-    }
-
     // ✅ Email valida: procedi con la registrazione
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
@@ -52,13 +38,14 @@ export const registerUser = async (req, res) => {
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "20m",
     }); // 20 minutes
-    await verifyMail(token, email, frontendOrigin);
+    verifyMail(token, email, frontendOrigin);
     newUser.token = token;
     await newUser.save();
 
     return res.status(201).json({
       success: true,
       message: "Utente creato con successo. Controlla la tua email.",
+      data: newUser
     });
   } catch (error) {
     return res.status(500).json({
@@ -130,7 +117,7 @@ export const updateProfile = async (req, res) => {
       success: true,
       message: "Profilo aggiornato con successo",
       user,
-    })
+    });
   } catch (error) {
     console.error("Errore nell'aggiornamento del profilo:", error);
     return res.status(500).json({
@@ -149,7 +136,9 @@ export const verification = async (req, res) => {
         message: "Il token di autorizzazione è mancante o non valido",
       });
     }
+
     const token = authHeader.split(" ")[1];
+
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -165,28 +154,30 @@ export const verification = async (req, res) => {
         message: "Il token non è valido",
       });
     }
-    const user = await User.findById(decoded.id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    user.token = null;
-    user.isVerified = true;
-    await user.save();
 
-    return res.status(200).json({
-      success: true,
-      message: "Utente verificato con successo",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+    const user = await User.findById(decoded.id)
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        user.token = null
+        user.isVerified = true
+        await user.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Email verified successfully"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
 export const loginUser = async (req, res) => {
   try {
@@ -202,34 +193,35 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({
         success: false,
         message:
-          "Accesso non autorizzato o utente non trovato con l'email fornita",
+          "Accesso non autorizzato. Controlla email e password.",
       });
     }
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
-      return res.status(402).json({
+      return res.status(401).json({
         success: false,
         message: "Password errata",
       });
     }
+    
     // check if user is verified
     if (user.isVerified !== true) {
       return res.status(403).json({
         success: false,
-        message: "L'utente non è verificato",
+        message: "Devi prima verificare il tuo indirizzo email. Controlla la posta.",
       });
     }
 
     // check for existing session and delete it
-    const existingSession = await Session.findOne({ userId: user._id });
-    if (existingSession) {
-      await Session.deleteOne({ userId: user._id });
-    }
+        const existingSession = await Session.findOne({ userId: user._id });
+        if (existingSession) {
+            await Session.deleteOne({ userId: user._id })
+        }
 
-    // create new session
+    // Crea nuova sessione
     await Session.create({ userId: user._id });
 
-    // generate tokens
+    // Genera token JWT
     const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "10d", // 10 days
     }); // 10 days
@@ -240,14 +232,18 @@ export const loginUser = async (req, res) => {
     user.isLoggedIn = true;
     await user.save();
 
+    // ✅ Rimuovi campi sensibili prima di inviare user
+    const { password: _, token, otp, otpExpiry, ...userData } = user.toObject();
+
     return res.status(200).json({
       success: true,
-      message: `Benvenuto ${user.username}`,
+      message: `Bentornato ${user.username}`,
       accessToken,
       refreshToken,
-      user,
+      user
     });
   } catch (error) {
+    console.error("Errore login:", error);
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -407,6 +403,76 @@ export const changePassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Internal server error",
+    });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.userId; // Ottiene l'ID dell'utente autenticato
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is missing from the request.",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Utente non trovato.",
+      });
+    } // Fase 1: Eliminare tutti i blog dell'utente
+    const userBlogs = await Blog.find({ author: userId });
+    for (const blog of userBlogs) {
+      // Elimina la thumbnail del blog da Cloudinary
+      if (blog.thumbnailPublicId) {
+        try {
+          await cloudinary.uploader.destroy(blog.thumbnailPublicId);
+          console.log(
+            `Thumbnail del blog ${blog._id} eliminata da Cloudinary.`
+          );
+        } catch (cloudinaryError) {
+          console.error(
+            `Errore nell'eliminazione della thumbnail da Cloudinary:`,
+            cloudinaryError
+          );
+        }
+      } 
+    } 
+    // Dopo aver eliminato thumbnail, elimina i blog
+    await Blog.deleteMany({ author: userId }); 
+    // Fase 2: Eliminare  dell'utente su blog altrui
+    if (user.photoPublicId) {
+      try {
+        await cloudinary.uploader.destroy(user.photoPublicId);
+        console.log(
+          `Foto profilo dell'utente ${userId} eliminata da Cloudinary.`
+        );
+      } catch (cloudinaryError) {
+        console.error(
+          `Errore nell'eliminazione della foto profilo da Cloudinary:`,
+          cloudinaryError
+        );
+      }
+    } // Fase 4: Eliminare l'utente dal database
+    await User.findByIdAndDelete(userId); 
+    
+    // Fase 5: Logout forzato
+    res.clearCookie("token", { maxAge: 0 }); // Rimuovi il token di autenticazione
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "Account eliminato con successo. Tutti i blog associati all'utente sono stati cancellati.",
+    });
+  } catch (error) {
+    console.error("Errore durante l'eliminazione dell'utente:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Si è verificato un errore durante l'eliminazione dell'account.",
+      error: error.message,
     });
   }
 };

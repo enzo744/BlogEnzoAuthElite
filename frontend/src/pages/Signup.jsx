@@ -59,7 +59,7 @@ const Signup = () => {
     // ✋ Validazione password
     if (!passwordRegex.test(formData.password)) {
       toast.error(
-        "La password deve contenere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un simbolo."
+        "La password deve contenere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un simbolo tra questi: @ $ ! % * ? &" 
       );
       return;
     }
@@ -78,15 +78,25 @@ const Signup = () => {
         navigate("/verify");
         toast.success(res.data.message);
       } else {
+        // Questo gestirà gli errori 400 (es. email non valida) restituiti dal backend
         toast.error(res.data.message || "Registrazione utente fallita");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Errore Axios catturato:", error);
+
+      //  GESTIONE ERRORI MIGLIORATA
+      const status = error.response?.status;
       const message = error.response?.data?.message;
-      if (message) {
+
+      if (status === 503) {
+        // Errore specifico per quando il servizio di verifica non è disponibile
+        toast.error(message || "Il servizio di verifica non è raggiungibile. Riprova più tardi.");
+      } else if (message) {
+        // Altri errori gestiti dal backend (es. 400 utente già esistente)
         toast.error(message);
       } else {
-        toast.error("Registrazione fallita. Riprova.");
+        // Errore generico (es. 500, rete assente)
+        toast.error("Si è verificato un errore imprevisto. Riprova.");
       }
     } finally {
       setIsLoading(false);

@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
+// Rimuoviamo l'import di Card perché applicheremo i suoi stili direttamente
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
@@ -51,7 +51,6 @@ const VistaTabellare = () => {
     fetchAllBlogs();
   }, []);
 
-  // Filtro i blog che hanno almeno un campo libero non vuoto
   const filteredBlogs = blogs.filter(
     (blog) => blog.campoLibero || blog.campoLibero2
   );
@@ -92,16 +91,16 @@ const VistaTabellare = () => {
               - Le classi della Card (p-5, rounded-md, border, etc.) sono state applicate a questo div.
               - Questo div è ora sia il contenitore di stile CHE il contenitore scorrevole.
           */}
-          <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
-            {filteredBlogs.length > 0
-              ? `Panoramica dei tuoi blog con campi liberi compilati: ${
-                  filteredBlogs.length
-                } blog${filteredBlogs.length > 1 ? "s" : ""}`
-              : "Nessun blog trovato con i campi liberi compilati."}
-          </TableCaption>
 
           <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-card text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
+              <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
+                {filteredBlogs.length > 0
+                  ? `Panoramica dei tuoi blog con campi liberi compilati: ${
+                      filteredBlogs.length
+                    } blog${filteredBlogs.length > 1 ? "s" : ""}`
+                  : "Nessun blog trovato con i campi liberi compilati."}
+              </TableCaption>
               {/* Ora l'intestazione è un figlio diretto del contenitore scorrevole e 'sticky' funzionerà */}
               <TableHeader className="sticky top-0 bg-card z-10  border border-gray-200 dark:border-gray-400">
                 <TableRow className="">
@@ -112,8 +111,13 @@ const VistaTabellare = () => {
                   <TableHead className="w-[46%] font-bold">
                     Campo Libero 2
                   </TableHead>
-                  <TableHead className="w-[6%]  font-bold">
-                    {/* <FilePenLine className="h-5 w-5 text-amber-500 justify-rightToCenter" /> */}
+                  <TableHead className="w-[6%]  font-bold text-center border border-gray-200 dark:border-gray-400">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                      >
+                        <FilePenLine className="text-gray-600 dark:text-gray-300" />
+                      </Button>
                   </TableHead>
                 </TableRow>
               </TableHeader>

@@ -25,7 +25,7 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false); // Nuovo stato per il processo di eliminazione
+  const [deleting, setDeleting] = useState(false);
 
   const { user, setUser, loading: authLoading } = getData();
 
@@ -54,7 +54,7 @@ const Profile = () => {
   };
 
   const changeFileHandler = (e) => {
-    setInput({ ...input, file: e.target.files[0] });
+    setInput({ ...input, file: e.target.files?.[0] });
   };
 
   const submitHandler = async (e) => {
@@ -92,19 +92,25 @@ const Profile = () => {
     }
   };
 
-  // Funzione per gestire l'eliminazione dell'account
   const deleteAccount = async () => {
     try {
       setDeleting(true);
+
+      const accessToken = localStorage.getItem("accessToken"); // Recupera il token di autenticazione
+      
       const res = await axios.delete(
         `https://blogenzoauthelite.onrender.com/user/profile/delete`,
         {
-          withCredentials: true,
-        }
-      );
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Autenticazione richiesta
+        },
+        withCredentials: true,
+      }
+    );
       if (res.data.success) {
         toast.success(res.data.message);
-        getData(setUser(null));
+        // getData(setUser(null));
+        setUser(null);
         navigate("/login");
       }
     } catch (error) {
@@ -118,6 +124,7 @@ const Profile = () => {
       setConfirmDeleteOpen(false);
     }
   };
+
 
   if (authLoading) {
     return (
@@ -139,25 +146,26 @@ const Profile = () => {
     <div className="pt-18 my-2 md:ml-[300px] h-screen dark:bg-gray-800">
       <div className="max-w-6xl mx-auto px-3 py-3">
         <Card className="flex flex-col items-center gap-4 p-6 md:p-3 dark:bg-gray-800 mx-4 md:mx-0">
-          {/* image section */}
-          <div className="flex flex-col items-center justify-center ">
-            <Avatar className="w-35 h-35 border-4">
+          {/* Avatar */}
+          <div className="flex flex-col items-center justify-center">
+            <Avatar className="w-35 h-35 border-4 border-gray-600 dark:border-gray-300">
               <AvatarImage src={user?.photoUrl || userLogo} />
             </Avatar>
           </div>
 
-          {/* info section */}
+          {/* Info utente */}
           <div>
             <h1 className="font-bold text-center md:text-4xl text-2xl mb-7">
               Welcome {user?.username}!
             </h1>
-            <p className="">
+            <p className="text-center">
               <span className="font-semibold">Email : </span>
               {user?.email}
             </p>
-            <div className="flex flex-col gap-0 items-center justify-center my-5 md:flex-row md:items-center md:text-center md:gap-4">
+
+            <div className="flex flex-col gap-0 items-center justify-center my-5 md:flex-row md:gap-4">
               <Label className="text-sm">Description</Label>
-              <p className="border dark:border-gray-600 p-2  rounded-md">
+              <p className="border dark:border-gray-600 p-2 rounded-md">
                 {user?.bio ||
                   "Sono uno sviluppatore web e creatore di contenuti, specializzato in tecnologie frontend. Quando non scrivo codice, mi trovate a scrivere di tecnologia."}
               </p>
@@ -167,7 +175,7 @@ const Profile = () => {
             <div className="flex flex-col gap-4 mt-6 items-center justify-center md:flex-row">
               <Dialog open={open} onOpenChange={setOpen}>
                 <Button onClick={() => setOpen(true)}>Modifica Profilo</Button>
-                <DialogContent className="md:w-[425px] ">
+                <DialogContent className="md:w-[425px]">
                   <DialogHeader>
                     <DialogTitle className="text-center">
                       Modifica Profilo
@@ -214,8 +222,8 @@ const Profile = () => {
                   <DialogFooter>
                     {loading ? (
                       <Button>
-                        <Loader2 className="mr-2 w-4 h-4 animate-spin" /> Please
-                        wait
+                        <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                        Please wait
                       </Button>
                     ) : (
                       <Button onClick={submitHandler}>Salva Modifiche</Button>
@@ -226,10 +234,7 @@ const Profile = () => {
 
               {/* Nuovo pulsante per la modifica della password */}
               <Link to={`/change-password/${user.email}`}>
-                <Button
-                  className="max-w-fit text-[12px] font-medium text-purple-700 hover:text-blue-500 hover:bg-orange-400 border-b-2 hover:border-purple-400
-                  bg-orange-200 dark:border-white"
-                >
+                <Button className="max-w-fit text-[12px] font-medium text-purple-700 hover:text-blue-500 hover:bg-orange-400 border-b-2 hover:border-purple-400 bg-orange-200 dark:border-white">
                   Modifica Password
                 </Button>
               </Link>

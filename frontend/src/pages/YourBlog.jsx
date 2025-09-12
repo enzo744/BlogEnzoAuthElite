@@ -137,7 +137,7 @@ const YourBlog = () => {
   }, [currentPage]);
 
   const handleConfirmDelete = async () => {
-     if (!blogToDelete.id) return;
+    if (!blogToDelete.id) return;
     try {
       const res = await axios.delete(
         `https://blogenzoauthelite.onrender.com/blog/delete/${blogToDelete.id}`,
@@ -194,20 +194,25 @@ const YourBlog = () => {
   };
 
   return (
-    <div className="pb-10 pt-15 md:ml-[320px] h-full min-h-screen dark:bg-gray-700">
+    <div className="pb-10 pt-12 md:ml-[300px] h-full min-h-screen dark:bg-gray-700">
       <div className="max-w-6xl mx-auto mt-8 px-4 ">
         <SearchBar 
           onSearch={handleSearch}
           onReset={handleReset}
           resetSignal={resetSignal}
         />
-        <Card className="w-full p-5 space-y-2 dark:bg-gray-800">
-            <TableCaption className="text-xl">
+        <h3 className="text-lg text-center mb-2">
+          {blog?.length > 0
+            ? `Pagine: ${totalPages} - Totale blogs: ${totalAccounts}`
+            : "Nessun blog creato."}
+        </h3>
+        <Card className="w-full p-4 space-y-2 dark:bg-gray-800">
+          <Table>
+            <TableCaption className="text-lg">
               {blog?.length > 0
                 ? `Pagine: ${totalPages} - Totale blogs: ${totalAccounts}`
                 : "Nessun blog creato."}
             </TableCaption>
-          <Table>
             <TableHeader className="overflow-x-auto">
               <TableRow>
                 <TableHead>
