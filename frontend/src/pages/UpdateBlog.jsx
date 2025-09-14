@@ -326,8 +326,8 @@ const UpdateBlog = () => {
               </AlertDialogContent>
             </AlertDialog>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
+          <div className="flex flex-col sm:flex-row gap-4 overflow-hidden">
+            <div className="flex-1 min-w-0">
               <Label className="mb-2">Title</Label>
               <Input
                 type="text"
@@ -335,10 +335,10 @@ const UpdateBlog = () => {
                 name="title"
                 value={blogData.title}
                 onChange={handleChange}
-                className="dark:border-gray-300 text-xs md:text-base"
+                className="w-full dark:border-gray-300 text-xs md:text-base"
               />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <Label className="mb-2">Subtitle</Label>
               <Input
                 type="text"
@@ -346,12 +346,12 @@ const UpdateBlog = () => {
                 name="subtitle"
                 value={blogData.subtitle}
                 onChange={handleChange}
-                className="dark:border-gray-300 text-xs md:text-base"
+                className="w-full dark:border-gray-300 text-xs md:text-base"
               />
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <Label className="block mb-2">Campo Libero</Label>
               <Input
                 type="text"
@@ -359,18 +359,17 @@ const UpdateBlog = () => {
                 name="campoLibero"
                 value={blogData.campoLibero}
                 onChange={handleChange}
-                className="dark:border-gray-300 text-xs md:text-base"
+                className="w-full dark:border-gray-300 text-xs md:text-base"
               />
             </div>
             <div className="flex-1">
               <Label className="block mb-2">Campo Libero2</Label>
-              <Input
-                type="text"
+              <Textarea
                 placeholder="Campo libero2"
                 name="campoLibero2"
                 value={blogData.campoLibero2}
                 onChange={handleChange}
-                className="border-gray-300 text-xs md:text-base"
+                className="custom-textarea w-full resize-y text-xs md:text-base"
               />
             </div>
           </div>
@@ -381,8 +380,7 @@ const UpdateBlog = () => {
               name="description"
               value={blogData.description}
               onChange={handleChange}
-              className="custom-textarea dark:custom-textarea"
-              // rows={4}
+              className="custom-textarea w-full resize-y text-xs md:text-base"
             />
           </div>
           <div>

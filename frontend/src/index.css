@@ -176,13 +176,17 @@ textarea::placeholder {
   color: black;
   border: 1px solid #d2e4fa;
   font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.375rem; /* Aggiunto - come rounded-md in Tailwind */
+  width: 100%;           /* Per sicurezza */
+  box-sizing: border-box;
 }
 
 .dark .custom-textarea {
   background-color: #1f2937; /* Tailwind dark: gray-800 */
   color: white;
   border: 1px solid #4b5563; /* Tailwind dark: gray-600 */
-}/* Submit button styles */
+}
 
 .submit-btn {
   border-radius: 0.4rem;
