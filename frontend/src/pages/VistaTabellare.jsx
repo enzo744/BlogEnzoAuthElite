@@ -15,12 +15,15 @@ import {
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
-import { FilePenLine, LockKeyhole } from "lucide-react";
+import { FilePenLine, LockKeyhole, Search } from "lucide-react";
 
 const VistaTabellare = () => {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
+
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
 
@@ -51,9 +54,24 @@ const VistaTabellare = () => {
     fetchAllBlogs();
   }, []);
 
-  const filteredBlogs = blogs.filter(
-    (blog) => blog.campoLibero || blog.campoLibero2
-  );
+  // const filteredBlogs = blogs.filter(
+  //   (blog) => blog.campoLibero || blog.campoLibero2
+  // );
+  useEffect(() => {
+  const lowerSearch = searchTerm.toLowerCase();
+  const filtered = blogs.filter((blog) => {
+    const hasContent = blog.campoLibero || blog.campoLibero2;
+
+    // Ricerca solo nel titolo e campoLibero
+    const matchesSearch =
+      blog.title?.toLowerCase().includes(lowerSearch) ||
+      blog.campoLibero?.toLowerCase().includes(lowerSearch);
+
+    return hasContent && (!searchTerm || matchesSearch);
+  });
+
+  setFilteredBlogs(filtered);
+}, [blogs, searchTerm]);
 
   if (isLoading) {
     return (
@@ -64,105 +82,116 @@ const VistaTabellare = () => {
   }
 
   return (
-    <div className="pt-20 md:ml-[320px] h-screen flex flex-col dark:bg-gray-700">
-      <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
-        <div className="block md:hidden text-center py-20">
-          <p className="text-red-600 text-lg font-semibold">
-            Pagina visibile solo su PC o Tablet
-          </p>
-        </div>
+  <div className="pt-20 md:ml-[320px] h-screen flex flex-col dark:bg-gray-700">
+    <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
+      <div className="block md:hidden text-center py-20">
+        <p className="text-red-600 text-lg font-semibold">
+          Pagina visibile solo su PC o Tablet
+        </p>
+      </div>
 
-        {/* 2. CONTENUTO PRINCIPALE SOLO SU TABLET E DESKTOP */}
-        <div className="hidden md:flex md:flex-col md:flex-grow overflow-hidden">
-          <div className="flex-shrink-0 py-6">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl md:text-3xl font-bold">
-                Vista Tabellare
-              </h1>
+      {/* Contenuto principale solo su tablet/desktop */}
+      <div className="hidden md:flex md:flex-col md:flex-grow overflow-hidden">
+        <div className="flex-shrink-0 py-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h1 className="text-2xl md:text-3xl font-bold">Vista Tabellare</h1>
+            <h2>
+              {filteredBlogs.length > 0
+                ? `Voci trovate : ${
+                    filteredBlogs.length
+                  } blog${filteredBlogs.length > 1 ? "s" : ""}`
+                : "Nessun blog trovato con i campi liberi compilati."}
+            </h2>
+
+            <div className="flex gap-4 items-center">
+              {/* Campo ricerca con lente */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                <input
+                  type="text"
+                  placeholder="Cerca tra i tuoi blogs..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                    }
+                  }}
+                  className="pl-10 pr-3 py-2 border border-gray-300 rounded text-sm md:text-base dark:bg-gray-700 dark:text-white dark:border-gray-500"
+                />
+              </div>
+
+              {/* Bottone Cripta/Decripta */}
               <Button onClick={() => setIsModalOpen(true)}>
                 <LockKeyhole className="mr-2 h-4 w-4" />
                 Cripta/Decripta
               </Button>
             </div>
           </div>
+        </div>
 
-          {/* 👇 MODIFICA PRINCIPALE:
-              - Rimosso il componente <Card>.
-              - Le classi della Card (p-5, rounded-md, border, etc.) sono state applicate a questo div.
-              - Questo div è ora sia il contenitore di stile CHE il contenitore scorrevole.
-          */}
+        {/* Tabella dei blog */}
+        <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-card text-card-foreground shadow-sm dark:bg-gray-800">
+          <Table className="table-fixed w-full">
+            <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
+              {filteredBlogs.length > 0
+                ? `Panoramica dei tuoi blog con campi liberi compilati: ${
+                    filteredBlogs.length
+                  } blog${filteredBlogs.length > 1 ? "s" : ""}`
+                : "Nessun blog trovato con i campi liberi compilati."}
+            </TableCaption>
+            <TableHeader className="sticky top-0 bg-card z-10 border border-gray-200 dark:border-gray-400">
+              <TableRow>
+                <TableHead className="w-[20%] font-bold">Titolo</TableHead>
+                <TableHead className="w-[28%] font-bold">Campo Libero</TableHead>
+                <TableHead className="w-[46%] font-bold">Campo Libero 2</TableHead>
+                <TableHead className="w-[6%] font-bold text-center border border-gray-200 dark:border-gray-400">
+                  <Button variant="ghost" size="icon">
+                    <FilePenLine className="text-gray-600 dark:text-gray-300" />
+                  </Button>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-card text-card-foreground shadow-sm dark:bg-gray-800">
-            <Table className="table-fixed w-full">
-              <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
-                {filteredBlogs.length > 0
-                  ? `Panoramica dei tuoi blog con campi liberi compilati: ${
-                      filteredBlogs.length
-                    } blog${filteredBlogs.length > 1 ? "s" : ""}`
-                  : "Nessun blog trovato con i campi liberi compilati."}
-              </TableCaption>
-              {/* Ora l'intestazione è un figlio diretto del contenitore scorrevole e 'sticky' funzionerà */}
-              <TableHeader className="sticky top-0 bg-card z-10  border border-gray-200 dark:border-gray-400">
-                <TableRow className="">
-                  <TableHead className="w-[20%] font-bold">Titolo</TableHead>
-                  <TableHead className="w-[28%] font-bold">
-                    Campo Libero
-                  </TableHead>
-                  <TableHead className="w-[46%] font-bold">
-                    Campo Libero 2
-                  </TableHead>
-                  <TableHead className="w-[6%]  font-bold text-center border border-gray-200 dark:border-gray-400">
+            <TableBody>
+              {filteredBlogs.map((blog) => (
+                <TableRow key={blog._id}>
+                  <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
+                    {blog.title}
+                  </TableCell>
+                  <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
+                    {blog.campoLibero}
+                  </TableCell>
+                  <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
+                    {blog.campoLibero2}
+                  </TableCell>
+                  <TableCell className="text-center border border-gray-200 dark:border-gray-400">
                     <Button
-                        variant="ghost"
-                        size="icon"
-                      >
-                        <FilePenLine className="text-gray-600 dark:text-gray-300" />
-                      </Button>
-                  </TableHead>
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => navigate(`/dashboard/write-blog/${blog._id}`)}
+                    >
+                      <FilePenLine className="h-5 w-5 text-blue-500" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {/* Il contenuto della tabella rimane identico */}
-                {filteredBlogs.map((blog) => (
-                  <TableRow key={blog._id}>
-                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
-                      {blog.title}
-                    </TableCell>
-                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
-                      {blog.campoLibero}
-                    </TableCell>
-                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
-                      {blog.campoLibero2}
-                    </TableCell>
-                    <TableCell className="text-center border border-gray-200 dark:border-gray-400">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          navigate(`/dashboard/write-blog/${blog._id}`)
-                        }
-                      >
-                        <FilePenLine className="h-5 w-5 text-blue-500" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Strumento Cripta / Decripta"
-      >
-        <EncryptDecrypt />
-      </Modal>
     </div>
-  );
+
+    {/* Modale Cripta/Decripta */}
+    <Modal
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      title="Strumento Cripta / Decripta"
+    >
+      <EncryptDecrypt />
+    </Modal>
+  </div>
+);
 };
 
 export default VistaTabellare;
