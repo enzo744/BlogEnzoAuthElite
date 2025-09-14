@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-// import JoditEditor from "jodit-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -33,7 +32,6 @@ import {
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { getData } from "@/context/userContext";
-// import RichTextEditor from "@/components/RichTextEditor";
 
 const UpdateBlog = () => {
   getData();
@@ -52,7 +50,6 @@ const UpdateBlog = () => {
   const dispatch = useDispatch();
   const { blog } = useSelector((store) => store.blog);
 
-  // const [content, setContent] = useState("");
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const [blogData, setBlogData] = useState({
     title: "",
@@ -103,6 +100,35 @@ const UpdateBlog = () => {
       fetchBlog();
     }
   }, [id]);
+
+  const isIOS = () => {
+    if (typeof navigator === "undefined") return false;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  };
+
+  const descriptionRef = useRef(null);
+  const campoLibero2Ref = useRef(null);
+  const [isIosDevice, setIsIosDevice] = useState(false);
+
+  // Rileva iOS all'avvio
+  useEffect(() => {
+    setIsIosDevice(isIOS());
+  }, []);
+
+  // Autoresize per iOS
+  useEffect(() => {
+    const autoresize = (ref) => {
+      if (ref.current) {
+        ref.current.style.height = "auto";
+        ref.current.style.height = ref.current.scrollHeight + "px";
+      }
+    };
+
+    if (isIosDevice) {
+      autoresize(descriptionRef);
+      autoresize(campoLibero2Ref);
+    }
+  }, [isIosDevice, blogData.description, blogData.campoLibero2]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -363,22 +389,28 @@ const UpdateBlog = () => {
             <div className="flex-1">
               <Label className="block mb-2">Campo Libero2</Label>
               <Textarea
+                ref={campoLibero2Ref}
                 placeholder="Campo libero2"
                 name="campoLibero2"
                 value={blogData.campoLibero2}
                 onChange={handleChange}
-                className="custom-textarea w-full resize-y text-xs md:text-base"
+                className={`custom-textarea w-full text-xs md:text-base overflow-hidden ${
+                  isIosDevice ? "resize-none" : "resize-y"
+                }`}
               />
             </div>
           </div>
           <div>
             <Label className="mb-2">Description</Label>
             <Textarea
+              ref={descriptionRef}
               id="description"
               name="description"
               value={blogData.description}
               onChange={handleChange}
-              className="custom-textarea w-full resize-y text-xs md:text-base"
+              className={`custom-textarea w-full text-xs md:text-base overflow-hidden ${
+                isIosDevice ? "resize-none" : "resize-y"
+              }`}
             />
           </div>
           <div>
