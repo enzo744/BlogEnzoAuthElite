@@ -359,7 +359,7 @@ const UpdateBlog = () => {
                 name="title"
                 value={blogData.title}
                 onChange={handleChange}
-                className="w-full dark:border-gray-300 text-xs md:text-base"
+                className="w-full dark:border-gray-300 text-base"
               />
             </div>
             <div className="flex-1 min-w-0">
@@ -370,7 +370,7 @@ const UpdateBlog = () => {
                 name="subtitle"
                 value={blogData.subtitle}
                 onChange={handleChange}
-                className="w-full dark:border-gray-300 text-xs md:text-base"
+                className="w-full dark:border-gray-300 text-base"
               />
             </div>
           </div>
@@ -383,7 +383,7 @@ const UpdateBlog = () => {
                 name="campoLibero"
                 value={blogData.campoLibero}
                 onChange={handleChange}
-                className="w-full dark:border-gray-300 text-xs md:text-base"
+                className="w-full dark:border-gray-300 text-base"
               />
             </div>
             <div className="flex-1">
@@ -394,7 +394,7 @@ const UpdateBlog = () => {
                 name="campoLibero2"
                 value={blogData.campoLibero2}
                 onChange={handleChange}
-                className={`custom-textarea w-full text-xs md:text-base overflow-hidden ${
+                className={`custom-textarea w-full text-base overflow-hidden ${
                   isIosDevice ? "resize-none" : "resize-y"
                 }`}
               />
@@ -408,7 +408,7 @@ const UpdateBlog = () => {
               name="description"
               value={blogData.description}
               onChange={handleChange}
-              className={`custom-textarea w-full text-xs md:text-base overflow-hidden ${
+              className={`custom-textarea w-full text-base overflow-hidden ${
                 isIosDevice ? "resize-none" : "resize-y"
               }`}
             />
@@ -445,13 +445,13 @@ const UpdateBlog = () => {
                 type="file"
                 onChange={selectThumbnail}
                 accept="image/*"
-                className="w-fit dark:border-gray-300 text-xs md:text-base"
+                className="w-fit dark:border-gray-300 text-base"
               />
               {previewThumbnail && (
                 <div className="mt-2 relative w-fit">
                   <img
                     src={previewThumbnail}
-                    className="w-64 my-2 rounded text-xs md:text-base"
+                    className="w-64 my-2 rounded text-base"
                     alt="Blog Thumbnail"
                   />
                   {/* 1. NUOVO PULSANTE per rimuovere l'immagine */}
