@@ -37,8 +37,6 @@ import { getData } from "@/context/userContext";
 
 const UpdateBlog = () => {
   getData();
-  // const editor = useRef(null);
-
   const [blogToDelete, setBlogToDelete] = useState({ id: null, title: "" });
   const accessToken = localStorage.getItem("accessToken");
 
