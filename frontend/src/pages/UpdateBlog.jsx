@@ -122,17 +122,16 @@ const UpdateBlog = () => {
   // Autoresize per iOS
   useEffect(() => {
     const autoresize = (ref) => {
-      if (ref && ref.current) {
+      if (ref && ref.current && ref.current instanceof HTMLElement) {
         ref.current.style.height = "auto";
         ref.current.style.height = ref.current.scrollHeight + "px";
       }
     };
 
     if (isIosDevice) {
-      autoresize(editor);
       autoresize(campoLibero2Ref);
     }
-  }, [isIosDevice, blogData.description, blogData.campoLibero2]);
+  }, [isIosDevice, blogData.campoLibero2]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
