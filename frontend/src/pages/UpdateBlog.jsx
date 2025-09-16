@@ -32,7 +32,9 @@ import {
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { getData } from "@/context/userContext";
-import JoditEditor from "jodit-react";
+// import JoditEditor from "jodit-react";
+import { lazy, Suspense } from "react";
+const JoditEditor = lazy(() => import("jodit-react"));
 
 const UpdateBlog = () => {
   getData();
@@ -405,12 +407,14 @@ const UpdateBlog = () => {
           </div>
           <div>
             <Label className="mb-2">Description</Label>
-            <JoditEditor 
-              ref={editor}
-              value={content}
-              onChange={newContent => setContent(newContent)}
-              className="jodit_toolbar"
-            />
+            <Suspense fallback={<p>Caricamento editor...</p>}>
+              <JoditEditor
+                ref={editor}
+                value={content}
+                onChange={(newContent) => setContent(newContent)}
+                className="jodit_toolbar"
+              />
+            </Suspense>
           </div>
           <div>
             <Label className="mb-2">Category</Label>
