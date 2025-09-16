@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -32,6 +32,7 @@ import {
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { getData } from "@/context/userContext";
+import JoditEditor from "jodit-react";
 
 const UpdateBlog = () => {
   getData();
@@ -50,6 +51,7 @@ const UpdateBlog = () => {
   const dispatch = useDispatch();
   const { blog } = useSelector((store) => store.blog);
 
+  const [content, setContent] = useState("");
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const [blogData, setBlogData] = useState({
     title: "",
@@ -61,15 +63,16 @@ const UpdateBlog = () => {
   });
 
   // Funzione per recuperare il blog specifico
-  const fetchBlog = async () => {
+  const fetchBlog = useCallback(async () => {
     try {
       setIsFetchingBlog(true);
       const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/${id}`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
+          Authorization: `Bearer ${accessToken}`,
         },
         withCredentials: true,
       });
+
       if (res.data.success) {
         const fetchedBlog = res.data.blog;
         setBlogData({
@@ -80,7 +83,7 @@ const UpdateBlog = () => {
           campoLibero: fetchedBlog.campoLibero || "",
           campoLibero2: fetchedBlog.campoLibero2 || "",
         });
-        // setContent(fetchedBlog.description || "");
+        setContent(fetchedBlog.description || "");
         setPreviewThumbnail(fetchedBlog.thumbnail || "");
         setPublish(fetchedBlog.isPublished || false);
       }
@@ -92,21 +95,22 @@ const UpdateBlog = () => {
     } finally {
       setIsFetchingBlog(false);
     }
-  };
+  }, [id, accessToken]); // ✅ Dipendenze corrette: tutto ciò che viene usato dentro fetchBlog
 
-  // Chiama la funzione di recupero dati quando il componente si monta o l'ID cambia
+  // useEffect che chiama fetchBlog
   useEffect(() => {
     if (id) {
       fetchBlog();
     }
-  }, [id]);
+  }, [id, fetchBlog]); // ✅ Nessun warning
 
   const isIOS = () => {
     if (typeof navigator === "undefined") return false;
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   };
 
-  const descriptionRef = useRef(null);
+  const editor = useRef(null);
+  // const descriptionRef = useRef(null);
   const campoLibero2Ref = useRef(null);
   const [isIosDevice, setIsIosDevice] = useState(false);
 
@@ -125,7 +129,8 @@ const UpdateBlog = () => {
     };
 
     if (isIosDevice) {
-      autoresize(descriptionRef);
+      autoresize(editor);
+      // autoresize(descriptionRef);
       autoresize(campoLibero2Ref);
     }
   }, [isIosDevice, blogData.description, blogData.campoLibero2]);
@@ -161,7 +166,7 @@ const UpdateBlog = () => {
     const formData = new FormData();
     formData.append("title", blogData.title);
     formData.append("subtitle", blogData.subtitle);
-    formData.append("description", blogData.description);
+    formData.append("description", content);
     formData.append("category", blogData.category);
     formData.append("campoLibero", blogData.campoLibero);
     formData.append("campoLibero2", blogData.campoLibero2);
@@ -187,7 +192,7 @@ const UpdateBlog = () => {
       if (res.data.success) {
         dispatch(setBlog(blog.map((b) => (b._id === id ? res.data.blog : b))));
         toast.success(res.data.message);
-        console.log("res.data.user:", res.data.user);
+        // console.log("res.data.user:", res.data.user);
         navigate("/dashboard/your-blog");
       }
     } catch (error) {
@@ -402,15 +407,11 @@ const UpdateBlog = () => {
           </div>
           <div>
             <Label className="mb-2">Description</Label>
-            <Textarea
-              ref={descriptionRef}
-              id="description"
-              name="description"
-              value={blogData.description}
-              onChange={handleChange}
-              className={`custom-textarea w-full text-base overflow-hidden ${
-                isIosDevice ? "resize-none" : "resize-y"
-              }`}
+            <JoditEditor 
+              ref={editor}
+              value={content}
+              onChange={newContent => setContent(newContent)}
+              className="jodit_toolbar"
             />
           </div>
           <div>
