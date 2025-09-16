@@ -122,7 +122,7 @@ const UpdateBlog = () => {
   // Autoresize per iOS
   useEffect(() => {
     const autoresize = (ref) => {
-      if (ref.current) {
+      if (ref && ref.current) {
         ref.current.style.height = "auto";
         ref.current.style.height = ref.current.scrollHeight + "px";
       }
@@ -130,7 +130,6 @@ const UpdateBlog = () => {
 
     if (isIosDevice) {
       autoresize(editor);
-      // autoresize(descriptionRef);
       autoresize(campoLibero2Ref);
     }
   }, [isIosDevice, blogData.description, blogData.campoLibero2]);
