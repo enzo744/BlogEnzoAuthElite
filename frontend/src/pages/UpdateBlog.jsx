@@ -32,7 +32,13 @@ import {
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { getData } from "@/context/userContext";
-// import JoditEditor from "jodit-react";
+import { Trash2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { lazy, Suspense } from "react";
 const JoditEditor = lazy(() => import("jodit-react"));
 
@@ -440,9 +446,10 @@ const UpdateBlog = () => {
               </SelectContent>
             </Select>
           </div>
+
           <div className="flex flex-col gap-2">
-            <div>
-              <Label className="mb-2">Thumbnail</Label>
+            <Label className="mb-2">Thumbnail</Label>
+            <div className="flex items-center gap-3">
               <Input
                 id="file"
                 type="file"
@@ -450,27 +457,38 @@ const UpdateBlog = () => {
                 accept="image/*"
                 className="w-fit dark:border-gray-300 text-base"
               />
+
+              {/* Icona con tooltip */}
               {previewThumbnail && (
-                <div className="mt-2 relative w-fit">
-                  <img
-                    src={previewThumbnail}
-                    className="w-64 my-2 rounded text-base"
-                    alt="Blog Thumbnail"
-                  />
-                  {/* 1. NUOVO PULSANTE per rimuovere l'immagine */}
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleRemoveThumbnail}
-                    className="absolute top-2 right-2"
-                    disabled={loading}
-                  >
-                    Rimuovi
-                  </Button>
-                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Trash2
+                        onClick={handleRemoveThumbnail}
+                        className="w-5 h-5 text-red-500 cursor-pointer hover:text-red-700"
+                        disabled={loading}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Rimuovi Foto</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
+
+            {/* Mostra l'anteprima */}
+            {previewThumbnail && (
+              <div className="mt-2">
+                <img
+                  src={previewThumbnail}
+                  className="w-64 my-2 rounded text-base"
+                  alt="Anteprima Thumbnail"
+                />
+              </div>
+            )}
           </div>
+
           <div className="flex gap-3 justify-center">
             <Button variant="outline" onClick={() => navigate(-1)}>
               Back
