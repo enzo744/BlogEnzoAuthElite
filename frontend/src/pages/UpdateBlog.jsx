@@ -173,6 +173,7 @@ const UpdateBlog = () => {
       toast.error("Il titolo è obbligatorio.");
       return;
     }
+    formData.append("title", blogData.title);
     formData.append("subtitle", blogData.subtitle);
     formData.append("description", content);
     formData.append("category", blogData.category);

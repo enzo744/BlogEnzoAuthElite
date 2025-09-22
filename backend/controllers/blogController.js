@@ -54,7 +54,14 @@ export const updateBlog = async (req, res) => {
     const blogId = req.params.blogId;
     // ✅ 1. Recupera l'ID dell'utente autenticato
     const authorId = req.userId;
-    const { title, subtitle, category, description, campoLibero, campoLibero2 } = req.body;
+    const {
+      title,
+      subtitle,
+      category,
+      description,
+      campoLibero,
+      campoLibero2,
+    } = req.body;
     const file = req.file; // req.file è il file della thumbnail, se presente
 
     if (!req.userId) {
@@ -108,15 +115,15 @@ export const updateBlog = async (req, res) => {
         }
       }
     }
-
-    // Costruzione dell'oggetto per l'aggiornamento del blog
+    
+    // Costruzione dell'oggetto per l'aggiornamento del blog solo con i campi effettivamente passati:
     const updateData = {
-      title: title || blog.title, // Usa il valore fornito se non è vuoto, altrimenti mantiene il vecchio
-      subtitle: subtitle || blog.subtitle,
-      description: description || blog.description,
-      category: category || blog.category,
-      campoLibero: campoLibero || blog.campoLibero,
-      campoLibero2: campoLibero2 || blog.campoLibero2,
+      ...(title !== undefined && { title }),
+      ...(subtitle !== undefined && { subtitle }),
+      ...(description !== undefined && { description }),
+      ...(category !== undefined && { category }),
+      ...(campoLibero !== undefined && { campoLibero }),
+      ...(campoLibero2 !== undefined && { campoLibero2 }),
       thumbnail: newThumbnailUrl, // L'URL della thumbnail viene impostata sul nuovo file
       thumbnailPublicId: newThumbnailPublicId, // L'ID pubblico della thumbnail viene impostata sul nuovo file
     };
