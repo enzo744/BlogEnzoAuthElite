@@ -118,7 +118,6 @@ const UpdateBlog = () => {
   };
 
   const editor = useRef(null);
-  // const descriptionRef = useRef(null);
   const campoLibero2Ref = useRef(null);
   const [isIosDevice, setIsIosDevice] = useState(false);
 
@@ -170,7 +169,10 @@ const UpdateBlog = () => {
 
   const updateBlogHandler = async () => {
     const formData = new FormData();
-    formData.append("title", blogData.title);
+    if (!blogData.title || blogData.title.trim() === "") {
+      toast.error("Il titolo è obbligatorio.");
+      return;
+    }
     formData.append("subtitle", blogData.subtitle);
     formData.append("description", content);
     formData.append("category", blogData.category);
@@ -198,7 +200,6 @@ const UpdateBlog = () => {
       if (res.data.success) {
         dispatch(setBlog(blog.map((b) => (b._id === id ? res.data.blog : b))));
         toast.success(res.data.message);
-        // console.log("res.data.user:", res.data.user);
         navigate("/dashboard/your-blog");
       }
     } catch (error) {
@@ -370,8 +371,13 @@ const UpdateBlog = () => {
                 name="title"
                 value={blogData.title}
                 onChange={handleChange}
-                className="w-full dark:border-gray-300 text-base"
+                className={`w-full text-base ${
+                  blogData.title === "" ? 'border-red-500 focus:ring-red-500' : 'dark:border-gray-300'
+                }`}
               />
+              {blogData.title === "" && (
+                <p className="text-sm text-red-500 mt-1">Il titolo è obbligatorio.</p>
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <Label className="mb-2">Subtitle</Label>
@@ -499,7 +505,7 @@ const UpdateBlog = () => {
             >
               Cripta/Decripta
             </Button>
-            <Button onClick={updateBlogHandler}>
+            <Button onClick={updateBlogHandler} disabled={blogData.title === ""}>
               {loading ? "Please Wait" : "Save"}
             </Button>
           </div>

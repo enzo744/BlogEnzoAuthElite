@@ -51,18 +51,20 @@ const EncryptDecrypt = () => {
 
   // Decrypt user input text
   const decryptData = () => {
-    try {
-      const bytes = CryptoJS.AES.decrypt(text, SECRET_PASS);
-      const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-      setDecryptedData(data);
-      setErrorMessage("");
-      setEncryptedData(""); // Clear encrypted data if present
-      textAreaRef.current.focus();
-    } catch (error) {
-      setErrorMessage("Decryption fallita. Controlla il tuo input!");
-      console.log(error);
-    }
-  };
+  try {
+    const cleanedText = text.trim(); // ✅ Elimina solo spazi iniziali/finali
+    const bytes = CryptoJS.AES.decrypt(cleanedText, SECRET_PASS);
+    const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    setDecryptedData(data);
+    setErrorMessage("");
+    setEncryptedData(""); // Clear encrypted data if present
+    textAreaRef.current.focus();
+  } catch (error) {
+    setErrorMessage("Decryption fallita. Controlla il tuo input!");
+    console.log(error);
+  }
+};
+
 
   // Handle button click (Encrypt or Decrypt)
   const handleClick = () => {
