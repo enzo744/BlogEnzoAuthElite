@@ -54,9 +54,6 @@ const VistaTabellare = () => {
     fetchAllBlogs();
   }, []);
 
-  // const filteredBlogs = blogs.filter(
-  //   (blog) => blog.campoLibero || blog.campoLibero2
-  // );
   useEffect(() => {
     const lowerSearch = searchTerm.toLowerCase();
     const filtered = blogs.filter((blog) => {

@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -34,7 +34,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Printer } from "lucide-react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {
   LuChevronFirst,
@@ -193,8 +193,13 @@ const YourBlog = () => {
     return pageNumbers;
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+
   return (
-    <div className="pb-10 pt-12 md:ml-[300px] h-full min-h-screen dark:bg-gray-700">
+    <div className="pb-10 pt-12 md:ml-[300px] h-full min-h-screen dark:bg-gray-700 printable-page">
       <div className="max-w-6xl mx-auto mt-8 px-4 ">
         <SearchBar 
           onSearch={handleSearch}
@@ -206,7 +211,12 @@ const YourBlog = () => {
             ? `Pagine: ${totalPages} - Totale blogs: ${totalAccounts}`
             : "Nessun blog creato."}
         </h3>
-        <Card className="w-full p-4 space-y-2 dark:bg-gray-800">
+        {/* Bottone Print */}
+        <Button onClick={handlePrint} className="mb-2">
+          <Printer className="mr-2 h-4 w-4" />
+          Print or Download
+        </Button>
+        <Card className="w-full p-4 space-y-2 dark:bg-gray-800 printable-page">
           <Table>
             <TableCaption className="text-lg">
               {blog?.length > 0

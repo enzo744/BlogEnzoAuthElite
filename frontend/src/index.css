@@ -145,11 +145,45 @@ Aggiungi questa regola nel tuo file index.css
 }
 
 @media print {
+  /* Nasconde elementi inutili nella stampa */
+  .no-print,
+  .navbar,
+  .sidebar {
+    display: none !important;
+  }
   .printable-page {
     height: auto !important;
     overflow: visible !important;
+    padding-top: 60px !important; /* ⬅️ Aggiunto per evitare che la navbar copra le prime righe */
+    margin-left: 0 !important; /* 👈 Rimuove il margine sinistro */
   }
-}
+
+  /* Disattiva sticky o fixed per evitare contenuti sovrapposti in stampa */
+  .sticky,
+  .fixed {
+    position: static !important;
+    top: auto !important;
+    z-index: 0 !important;
+  }
+
+  /* Rimuove scroll per evitare problemi di overflow */
+  body,
+  html {
+    overflow: visible !important;
+  }
+
+  /* (Opzionale) Forza dimensione pagina e margini */
+  @page {
+    size: A4 portrait;
+    margin: 20mm;
+  }
+
+  /* (Opzionale) Aggiungi separatori manuali tra pagine */
+  .page-break {
+    page-break-after: always;
+  }
+  
+} 
 
 
 {/* -------------- Encrypt and Decrypt --------------- */}
