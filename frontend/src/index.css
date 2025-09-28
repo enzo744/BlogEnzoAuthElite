@@ -144,6 +144,13 @@ Aggiungi questa regola nel tuo file index.css
   color: rgba(26, 25, 25, 0.806);
 }
 
+@media print {
+  .printable-page {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
 
 {/* -------------- Encrypt and Decrypt --------------- */}
 /* Button styles */
