@@ -32,7 +32,7 @@ import {
 import Modal from "@/components/Modal";
 import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { getData } from "@/context/userContext";
-import { Trash2 } from "lucide-react";
+import { Trash2, Printer } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -324,8 +324,12 @@ const UpdateBlog = () => {
     );
   }
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
-    <div className="pb-5  pt-20 md:ml-[320px] flex-wrap">
+    <div className="printable-page pb-5  pt-20 md:ml-[320px] flex-wrap">
       <div className="max-w-6xl mx-auto mt-6 px-3">
         <Card className="w-full bg-white dark:bg-gray-800 p-5 space-y-2 ">
           <h1 className="text-4xl font-bold">Informazioni sul blog</h1>
@@ -336,6 +340,10 @@ const UpdateBlog = () => {
           <div className="space-x-4">
             <Button onClick={() => togglePublishUnpublish()}>
               {publish ? "UnPublish" : "Publish"}
+            </Button>
+            <Button onClick={handlePrint} className="">
+              <Printer className="mr-2 h-4 w-4" />
+              Print or Download
             </Button>
             <AlertDialog
               open={isDeleteDialogOpen}
