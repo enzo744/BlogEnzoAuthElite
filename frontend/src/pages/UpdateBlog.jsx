@@ -337,11 +337,12 @@ const UpdateBlog = () => {
             Apporta modifiche ai tuoi blog qui. Clicca su Pubblica quando hai
             finito e se vuoi renderlo visibile a tutti gli utenti loggati.
           </span>
-          <div className="space-x-4 flex flex-col sm:flex-row gap-2 space-y-2">
-            <Button onClick={() => togglePublishUnpublish()}>
+          <div className="flex flex-col sm:flex-row justify-center gap-2 my-4">
+          
+            <Button onClick={() => togglePublishUnpublish()} className="w-full sm:w-[180px]">
               {publish ? "UnPublish" : "Publish"}
             </Button>
-            <Button onClick={handlePrint} className="">
+            <Button onClick={handlePrint} className="w-full sm:w-[180px]">
               <Printer className="mr-2 h-4 w-4" />
               Print or Download
             </Button>
@@ -350,7 +351,7 @@ const UpdateBlog = () => {
               onOpenChange={setIsDeleteDialogOpen}
             >
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" onClick={openDeleteDialog}>
+                <Button variant="destructive" onClick={openDeleteDialog} className="w-full sm:w-[180px]">
                   Remove Blog
                 </Button>
               </AlertDialogTrigger>
@@ -381,11 +382,15 @@ const UpdateBlog = () => {
                 value={blogData.title}
                 onChange={handleChange}
                 className={`w-full text-base ${
-                  blogData.title === "" ? 'border-red-500 focus:ring-red-500' : 'dark:border-gray-300'
+                  blogData.title === ""
+                    ? "border-red-500 focus:ring-red-500"
+                    : "dark:border-gray-300"
                 }`}
               />
               {blogData.title === "" && (
-                <p className="text-sm text-red-500 mt-1">Il titolo è obbligatorio.</p>
+                <p className="text-sm text-red-500 mt-1">
+                  Il titolo è obbligatorio.
+                </p>
               )}
             </div>
             <div className="flex-1 min-w-0">
@@ -494,7 +499,7 @@ const UpdateBlog = () => {
 
             {/* Mostra l'anteprima */}
             {previewThumbnail && (
-              <div className="mt-2">
+              <div className="mt-1 flex justify-center sm:justify-start">
                 <img
                   src={previewThumbnail}
                   className="w-64 my-2 rounded text-base"
@@ -504,7 +509,7 @@ const UpdateBlog = () => {
             )}
           </div>
 
-          <div className="flex gap-3 justify-center">
+          <div className="flex gap-3 items-center justify-center">
             <Button variant="outline" onClick={() => navigate(-1)}>
               Back
             </Button>
@@ -514,7 +519,10 @@ const UpdateBlog = () => {
             >
               Cripta/Decripta
             </Button>
-            <Button onClick={updateBlogHandler} disabled={blogData.title === ""}>
+            <Button
+              onClick={updateBlogHandler}
+              disabled={blogData.title === ""}
+            >
               {loading ? "Please Wait" : "Save"}
             </Button>
           </div>
