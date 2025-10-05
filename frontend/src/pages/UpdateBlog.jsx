@@ -331,13 +331,13 @@ const UpdateBlog = () => {
   return (
     <div className="printable-page pb-5  pt-20 md:ml-[320px] flex-wrap">
       <div className="max-w-6xl mx-auto mt-6 px-3">
-        <Card className="w-full bg-white dark:bg-gray-800 p-5 space-y-2 ">
+        <Card className="w-full bg-white dark:bg-gray-800 p-5">
           <h1 className="text-4xl font-bold">Informazioni sul blog</h1>
           <span className="text-sm">
             Apporta modifiche ai tuoi blog qui. Clicca su Pubblica quando hai
             finito e se vuoi renderlo visibile a tutti gli utenti loggati.
           </span>
-          <div className="space-x-4">
+          <div className="space-x-4 flex flex-col sm:flex-row gap-2 space-y-2">
             <Button onClick={() => togglePublishUnpublish()}>
               {publish ? "UnPublish" : "Publish"}
             </Button>

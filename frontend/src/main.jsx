@@ -8,9 +8,9 @@ import { UserProvider } from "./context/userContext";
 // Importare i componenti di Redux
 import { Provider } from "react-redux";
 import persistStore from "redux-persist/es/persistStore";
-import { PersistGate } from 'redux-persist/integration/react';
-import store from './redux/Store';
-import  ThemeProvider  from "./components/ThemeProvider";
+import { PersistGate } from "redux-persist/integration/react";
+import store from "./redux/Store";
+import ThemeProvider from "./components/ThemeProvider";
 
 const persistor = persistStore(store);
 
@@ -19,20 +19,22 @@ createRoot(document.getElementById("root")).render(
     {/* Avvolgere tutta l'applicazione con il Provider di Redux */}
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-      <ThemeProvider>
-      <UserProvider> {/* Provider di Context */}
-        <App />
-      </UserProvider>
-      </ThemeProvider>
+        <ThemeProvider>
+          <UserProvider>
+            {" "}
+            {/* Provider di Context */}
+            <App />
+          </UserProvider>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
-        <Toaster
-          toastOptions={{
-            className: "toast-style",
-            style: {
-              fontSize: "16px",
-            },
-          }}
-        />
+    <Toaster
+      toastOptions={{
+        className: "toast-style",
+        style: {
+          fontSize: "16px",
+        },
+      }}
+    />
   </StrictMode>
 );

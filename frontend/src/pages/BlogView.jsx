@@ -37,12 +37,12 @@ const BlogView = () => {
       const res = await axios.get(
         `https://blogenzoauthelite.onrender.com/blog/${selectedBlog?._id}`,
         {
-            headers: {
-              Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
-            },
-            withCredentials: true,
-          }
-        );
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
+          },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -84,26 +84,34 @@ const BlogView = () => {
     <div className="pt-12 ">
       <div className="max-w-6xl mx-auto p-10">
         <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
-              Home
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link
+                to="/"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Home
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
 
-          <BreadcrumbItem>
-            <Link to="/blogs" className="text-muted-foreground hover:text-foreground transition-colors">
-              Blogs
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link
+                to="/blogs"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Blogs
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
 
-          <BreadcrumbItem>
-            <span className="text-muted-foreground">{selectedBlog.title}</span>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+            <BreadcrumbItem>
+              <span className="text-muted-foreground">
+                {selectedBlog.title}
+              </span>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         {/* Blog Header */}
         <div className="my-8 md:w-[760px] dark:bg-gray-900">
           <h1 className="text-4xl font-bold tracking-tight mb-4 dark:text-gray-400">
@@ -112,17 +120,21 @@ const BlogView = () => {
           <div className="flex items-center justify-between flex-wrap gap-4 my-4 ">
             <div className="flex items-center space-x-4 font-serif ">
               <Avatar className="">
-                <AvatarImage src={selectedBlog.author?.photoUrl} alt="Author" className="" />
+                <AvatarImage
+                  src={selectedBlog.author?.photoUrl}
+                  alt="Author"
+                  className=""
+                />
                 <AvatarFallback className="">JD</AvatarFallback>
               </Avatar>
               <div className="">
                 <span className="font-sm text-blue-800 dark:text-gray-400 ">
-                  {selectedBlog.author?.username} 
+                  {selectedBlog.author?.username}
                 </span>
               </div>
             </div>
             <div className="text-sm text-muted-foreground dark:text-gray-400 p-4 mx-4">
-              Published on {changeTimeFormat(selectedBlog.createdAt)} 
+              Published on {changeTimeFormat(selectedBlog.createdAt)}
             </div>
           </div>
         </div>
@@ -161,22 +173,21 @@ const BlogView = () => {
                 variant="ghost"
                 size="sm"
                 className="flex items-center gap-1"
-                >
-              </Button>
+              ></Button>
             </div>
           </div>
           <div className="flex items-center space-x-2 ">
-              <Button variant="ghost" size="sm">
-                <Bookmark className="h-4 w-4" />
-              </Button>
-              <Button
-                onClick={() => handleShare(selectedBlog._id)}
-                variant="ghost"
-                size="lg"
-              >
-                <Share2 className="h-4 w-4" />
-              </Button>
-            </div>
+            <Button variant="ghost" size="sm">
+              <Bookmark className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() => handleShare(selectedBlog._id)}
+              variant="ghost"
+              size="lg"
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
