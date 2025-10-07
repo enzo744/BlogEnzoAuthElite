@@ -34,17 +34,17 @@ const SearchBar = ({ onSearch, onReset, resetSignal }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex flex-col md:flex-row flex-wrap gap-3 my-6 items-center">
+    <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2 my-6 items-center">
       <Input
         type="text"
         placeholder="Cerca nei tuoi blog..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full md:w-auto md:flex-grow"
+        className="w-full p-5 lg:w-auto md:flex-grow border-gray-500"
       />
 
       <Select value={published} onValueChange={setPublished}>
-        <SelectTrigger className="w-full md:w-[180px]">
+        <SelectTrigger className="w-full md:w-[180px] border-gray-500">
           <SelectValue placeholder="Stato" />
         </SelectTrigger>
         <SelectContent>
@@ -54,15 +54,15 @@ const SearchBar = ({ onSearch, onReset, resetSignal }) => {
         </SelectContent>
       </Select>
 
-      <div className="flex gap-2 w-full md:w-auto">
-        <Button type="submit" className="w-1/2 md:w-auto">
+      <div className="flex w-wrap gap-2 md:w-auto">
+        <Button type="submit" className="w-1/2 ">
           Cerca
         </Button>
         <Button
           type="button"
           onClick={handleReset}
           variant="outline"
-          className="w-1/2 md:w-auto"
+          className="w-1/2 "
         >
           Reset
         </Button>

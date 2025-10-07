@@ -113,8 +113,8 @@ const BlogView = () => {
           </BreadcrumbList>
         </Breadcrumb>
         {/* Blog Header */}
-        <div className="my-8 md:w-[760px] dark:bg-gray-900">
-          <h1 className="text-4xl font-bold tracking-tight mb-4 dark:text-gray-400">
+        <div className="my-8 lg:w-[760px] dark:bg-gray-900">
+          <h1 className="text-xl lg:text-4xl md:text-3xl font-bold tracking-tight mb-4 dark:text-gray-400">
             {selectedBlog.title}
           </h1>
           <div className="flex items-center justify-between flex-wrap gap-4 my-4 ">
@@ -134,7 +134,7 @@ const BlogView = () => {
               </div>
             </div>
             <div className="text-sm text-muted-foreground dark:text-gray-400 p-4 mx-4">
-              Published on {changeTimeFormat(selectedBlog.createdAt)}
+              Creato il {changeTimeFormat(selectedBlog.createdAt)}
             </div>
           </div>
         </div>
@@ -145,12 +145,12 @@ const BlogView = () => {
             <img
               src={selectedBlog.thumbnail}
               alt="Blog Thumbnail" // È meglio usare un alt text più generico
-              className="w-full h-auto object-cover" // Aggiustato per riempire il contenitore
+              className="object-cover" // Aggiustato per riempire il contenitore
             />
           </div>
         )}
         <span className="">{selectedBlog.subtitle}</span>
-
+        
         <span
           className="blog-content"
           dangerouslySetInnerHTML={{ __html: selectedBlog.description }}

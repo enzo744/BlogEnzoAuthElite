@@ -1,4 +1,4 @@
-import { BookOpen, ChartColumnBig, LogOut, Search, User } from "lucide-react";
+import { BookOpen, ChartColumnBig, LogOut, PhoneForwarded, Search, User } from "lucide-react";
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
@@ -71,8 +71,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar no-print py-3 fixed w-full bg-sky-50 dark:bg-gray-800 dark:border-b-gray-600 border-b-gray-300 border-2 z-50">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-0">
+    <div className="navbar no-print py-3 fixed w-full bg-gray-50 dark:bg-gray-800 dark:border-b-gray-600 border-b-gray-500 border-1 z-50">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 lg:px-2 ">
         {/* logo section */}
         <div className="flex gap-5 items-center">
           <Link to={"/"}>
@@ -83,11 +83,11 @@ const Navbar = () => {
               </h1>
             </div>
           </Link>
-          <div className="relative hidden md:block">
+          <div className="relative hidden lg:block">
             <Input
               type="text"
               placeholder="Search"
-              className="border border-gray-700 dark:bg-gray-900 bg-gray-300  hidden md:block"
+              className="border border-gray-700 dark:bg-gray-900 bg-gray-300  "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -97,8 +97,8 @@ const Navbar = () => {
           </div>
         </div>
         {/* nav section */}
-        <nav className="flex md:gap-5 gap-4 items-center">
-          <ul className="hidden xl:flex gap-7 items-center text-md ">
+        <nav className="flex lg:gap-5 gap-4 items-center">
+          <ul className="hidden md:flex gap-7 items-center text-md ">
             <NavLink to={"/"} className="cursor-pointer">
               <li>Home</li>
             </NavLink>
@@ -108,10 +108,9 @@ const Navbar = () => {
             <NavLink to={"/about"} className={`cursor-pointer`}>
               <li>About</li>
             </NavLink>
-            <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Nuovo Blog</li></NavLink>
-            <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Miei Blogs</li></NavLink>
-            {/* 👇 NUOVO LINK AGGIUNTO QUI 👇 */}
-            <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Lista Blogs</li></NavLink>
+            {/* <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Nuovo Blog</li></NavLink> */}
+            {/* <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Miei Blogs</li></NavLink> */}
+            {/* <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Lista Blogs</li></NavLink> */}
           </ul>
           <div className="flex">
             <Button onClick={() => dispatch(toggleTheme())}>
@@ -146,13 +145,20 @@ const Navbar = () => {
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                       </DropdownMenuItem>
 
-                      {/* 👇 NUOVO LINK AGGIUNTO ANCHE QUI 👇 */}
                        <DropdownMenuItem
                          onClick={() => navigate("/dashboard/vista-tabellare")}
                        >
                          <FaRegListAlt />
                          <span>Lista Blogs</span>
-                         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                         <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
+                       </DropdownMenuItem>
+
+                       <DropdownMenuItem
+                         onClick={() => navigate("/dashboard/rubrica")}
+                       >
+                         <PhoneForwarded />
+                         <span>Rubrica</span>
+                         <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
                        </DropdownMenuItem>
                       
                       <DropdownMenuItem
@@ -177,11 +183,11 @@ const Navbar = () => {
                 </Button>
               </div>
             ) : (
-              <div className="ml-7 md:flex gap-2 ">
+              <div className="ml-7 lg:flex gap-2 ">
                 <Link to={"/login"}>
                   <Button>Login</Button>
                 </Link>
-                <Link className="hidden md:block" to={"/signup"}>
+                <Link className="hidden lg:block" to={"/signup"}>
                   <Button>Signup</Button>
                 </Link>
               </div>

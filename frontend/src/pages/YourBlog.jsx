@@ -197,10 +197,9 @@ const YourBlog = () => {
     window.print();
   };
 
-
   return (
-    <div className="pb-10 pt-12 md:ml-[300px] h-full min-h-screen dark:bg-gray-700 printable-page">
-      <div className="max-w-6xl mx-auto mt-8 px-4 ">
+    <div className="printable-page pb-5 pt-12 bg-white lg:ml-[285px] dark:bg-gray-700 flex-wrap ">
+      <div className="max-w-7xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
         <SearchBar 
           onSearch={handleSearch}
           onReset={handleReset}
@@ -212,11 +211,11 @@ const YourBlog = () => {
             : "Nessun blog creato."}
         </h3>
         {/* Bottone Print */}
-        <Button onClick={handlePrint} className="mb-2">
-          <Printer className="mr-2 h-4 w-4" />
+        <Button onClick={handlePrint} className="mb-2 w-wrap">
+          <Printer className="h-4 w-4" />
           Print or Download
         </Button>
-        <Card className="w-full p-4 space-y-2 dark:bg-gray-800 printable-page">
+        <Card className="w-full p-4 space-y-2 bg-gray-100 dark:bg-gray-800 printable-page">
           <Table>
             <TableCaption className="text-lg">
               {blog?.length > 0
@@ -232,17 +231,17 @@ const YourBlog = () => {
                   */}
                   <div className="flex items-center gap-4">
                     {/* Segnaposto invisibile che occupa lo stesso spazio dell'immagine */}
-                    <div className="w-20 hidden md:block" />
+                    <div className="w-20 hidden lg:block" />
                     <span>Titolo</span>
                   </div>
                 </TableHead>
-                <TableHead className="hidden md:table-cell">
+                <TableHead className="hidden lg:table-cell">
                   Categoria
                 </TableHead>
-                <TableHead className="hidden md:table-cell">
+                <TableHead className="hidden lg:table-cell">
                   Data creazione
                 </TableHead>
-                <TableHead className="hidden md:table-cell">
+                <TableHead className="hidden lg:table-cell">
                   Data modifica
                 </TableHead>
                 <TableHead className="text-center">Azione</TableHead>
@@ -285,7 +284,7 @@ const YourBlog = () => {
                       <DropdownMenuContent className="w-[180px]">
                         <DropdownMenuItem
                           onClick={() =>
-                            navigate(`/dashboard/write-blog/${item._id}`)
+                            navigate(`/dashboard/write-blog/${item._id}` )
                           }
                         >
                           <Edit /> Edit

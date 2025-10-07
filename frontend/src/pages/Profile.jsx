@@ -143,9 +143,9 @@ const Profile = () => {
   }
 
   return (
-    <div className="pt-18 my-2 md:ml-[300px] h-screen dark:bg-gray-800">
+    <div className="pt-18  lg:ml-[285px] h-screen bg-white dark:bg-gray-800">
       <div className="max-w-6xl mx-auto px-3 py-3">
-        <Card className="flex flex-col items-center gap-4 p-6 md:p-3 dark:bg-gray-800 mx-4 md:mx-0">
+        <Card className="flex flex-col items-center bg-gray-100 gap-4 p-6 md:p-3 dark:bg-gray-700 mx-4 md:mx-0">
           {/* Avatar */}
           <div className="flex flex-col items-center justify-center">
             <Avatar className="w-35 h-35 border-4 border-gray-600 dark:border-gray-300">

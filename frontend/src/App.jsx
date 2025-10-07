@@ -20,8 +20,9 @@ import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import YourBlog from "./pages/YourBlog";
 import UpdateBlog from "./pages/UpdateBlog";
-import SearchResults from "./pages/SearchResults";
 import VistaTabellare from "./pages/VistaTabellare";
+import SearchResults from "./pages/SearchResults";
+import Rubrica from "./pages/Rubrica";
 
 const router = createBrowserRouter([
   {
@@ -160,6 +161,10 @@ const router = createBrowserRouter([
       {
         path: "vista-tabellare",
         element: <VistaTabellare />,
+      },
+      {
+        path: "rubrica",
+        element: <Rubrica />,
       },
     ],
   },

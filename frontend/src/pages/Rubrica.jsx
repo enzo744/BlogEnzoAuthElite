@@ -13,14 +13,11 @@ import {
 } from "@/components/ui/table";
 // Rimuoviamo l'import di Card perché applicheremo i suoi stili direttamente
 import { Button } from "@/components/ui/button";
-import Modal from "@/components/Modal";
-import EncryptDecrypt from "@/components/EncryptDecrypt";
-import { FilePenLine, LockKeyhole, Printer, Search } from "lucide-react";
+import { FilePenLine, Printer, Search } from "lucide-react";
 
-const VistaTabellare = () => {
+const Rubrica = () => {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredBlogs, setFilteredBlogs] = useState([]);
 
@@ -30,12 +27,12 @@ const VistaTabellare = () => {
   const fetchAllBlogs = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/get-own-blogs`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          withCredentials: true,
-        });
+      const res = await axios.get(`http://localhost:8015/blog/get-own-blogs`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
+      });
 
       if (res.data.success) {
         setBlogs(res.data.blogs);
@@ -57,12 +54,12 @@ const VistaTabellare = () => {
   useEffect(() => {
     const lowerSearch = searchTerm.toLowerCase();
     const filtered = blogs.filter((blog) => {
-      const hasContent = blog.campoLibero || blog.campoLibero2;
+      const hasContent = blog.description;
 
-      // Ricerca solo nel titolo e campoLibero
+      // Ricerca solo nel titolo e descrizione
       const matchesSearch =
         blog.title?.toLowerCase().includes(lowerSearch) ||
-        blog.campoLibero?.toLowerCase().includes(lowerSearch);
+        blog.description?.toLowerCase().includes(lowerSearch);
 
       return hasContent && (!searchTerm || matchesSearch);
     });
@@ -83,7 +80,7 @@ const VistaTabellare = () => {
   };
 
   return (
-    <div className="printable-page pt-20 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700 ">
+    <div className="printable-page pt-15 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
         <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
@@ -95,8 +92,8 @@ const VistaTabellare = () => {
         <div className="hidden md:flex md:flex-col md:flex-grow overflow-hidden">
           <div className="flex-shrink-0 py-6">
             <div className="flex flex-col xl:flex-row lg:items-center lg:justify-between gap-4">
-              <h1 className="text-2xl lg:text-3xl font-bold">
-                Vista Tabellare
+              <h1 className="text-2xl lg:text-3xl font-semibold">
+                Rubrica Telefonica e Indirizzi
               </h1>
               <h2>
                 {filteredBlogs.length > 0
@@ -120,15 +117,9 @@ const VistaTabellare = () => {
                         e.preventDefault();
                       }
                     }}
-                    className="pl-10 pr-3 py-2 border border-gray-300 rounded text-sm md:text-base dark:bg-gray-700 dark:text-white dark:border-gray-500"
+                    className="pl-10 pr-3 py-2 border border-gray-500 rounded text-sm md:text-base dark:bg-gray-700 dark:text-white dark:border-gray-500"
                   />
                 </div>
-
-                {/* Bottone Cripta/Decripta */}
-                <Button onClick={() => setIsModalOpen(true)}>
-                  <LockKeyhole className="mr-2 h-4 w-4" />
-                  Cripta/Decripta
-                </Button>
                 {/* Bottone Print */}
                 <Button onClick={handlePrint} className="no-print">
                   <Printer className="mr-2 h-4 w-4" />
@@ -139,23 +130,20 @@ const VistaTabellare = () => {
           </div>
 
           {/* Tabella dei blog */}
-          <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800 printable-page">
+          <div className="printable-page overflow-y-auto flex-grow p-5 rounded-lg border  bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
               <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
                 {filteredBlogs.length > 0
-                  ? `Panoramica dei tuoi blog con campi liberi compilati: ${
+                  ? `Panoramica dei tuoi blog con campi compilati: ${
                       filteredBlogs.length
                     } blog${filteredBlogs.length > 1 ? "s" : ""}`
-                  : "Nessun blog trovato con i campi liberi compilati."}
+                  : "Nessun blog trovato con i campi compilati."}
               </TableCaption>
               <TableHeader className="sticky top-0 bg-gray-100 z-10 border border-gray-200 dark:border-gray-400">
                 <TableRow>
                   <TableHead className="w-[20%] font-bold">Titolo</TableHead>
-                  <TableHead className="w-[28%] font-bold">
-                    Campo Libero
-                  </TableHead>
-                  <TableHead className="w-[46%] font-bold">
-                    Campo Libero 2
+                  <TableHead className="w-[74%] font-bold">
+                    Descrizione
                   </TableHead>
                   <TableHead className="w-[6%] font-bold text-center border border-gray-200 dark:border-gray-400">
                     <Button variant="ghost" size="icon">
@@ -172,10 +160,11 @@ const VistaTabellare = () => {
                       {blog.title}
                     </TableCell>
                     <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
-                      {blog.campoLibero}
-                    </TableCell>
-                    <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
-                      {blog.campoLibero2}
+                      {/* {blog.description} */}
+                      <span
+                        className="blog-content"
+                        dangerouslySetInnerHTML={{ __html: blog.description }}
+                        ></span>
                     </TableCell>
                     <TableCell className="text-center border border-gray-200 dark:border-gray-400">
                       <Button
@@ -195,17 +184,8 @@ const VistaTabellare = () => {
           </div>
         </div>
       </div>
-
-      {/* Modale Cripta/Decripta */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Strumento Cripta / Decripta"
-      >
-        <EncryptDecrypt />
-      </Modal>
     </div>
   );
 };
 
-export default VistaTabellare;
+export default Rubrica;

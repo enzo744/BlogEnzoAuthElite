@@ -1,11 +1,11 @@
-import { ChartColumnBig, SquareUser } from 'lucide-react'
+import { ChartColumnBig, SquareUser, PhoneForwarded } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { FaRegListAlt } from 'react-icons/fa';
 import { LuFilePlus2 } from "react-icons/lu";
 
 const Sidebar = () => {
   return (
-    <div className='sidebar no-print hidden mt-10 fixed md:block border-r-2 dark:bg-gray-800 bg-white border-gray-300 dark:border-gray-600 0 w-[300px] p-10 space-y-2 h-screen z-10 '>
+    <div className='sidebar no-print hidden mt-10 fixed lg:block border-r-2 dark:bg-gray-800 bg-gray-50 border-gray-300 border-r-gray-500 dark:border-gray-600 0  p-10 space-y-2 h-screen z-10 '>
       <div className='text-center pt-10 px-3 space-y-2'>
         <NavLink to='/dashboard/profile' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-semibold cursor-pointer p-3 rounded-2xl w-full`}>
           <SquareUser />
@@ -19,12 +19,15 @@ const Sidebar = () => {
           <FaRegListAlt />
           <span>Lista Blogs</span>
         </NavLink>
+        <NavLink to='/dashboard/rubrica' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-semibold cursor-pointer p-3 rounded-2xl w-full`}>
+          <PhoneForwarded />
+          <span>Rubrica</span>
+        </NavLink>
         <NavLink to='/dashboard/write-blog' className={({ isActive }) => `text-2xl  ${isActive ? "bg-gray-800 dark:bg-gray-900 text-gray-200" : "bg-transparent"} flex items-center gap-2 font-semibold cursor-pointer p-3 rounded-2xl w-full`}>
           <LuFilePlus2/>
           <span>Nuovo Blog</span>
         </NavLink>
       </div>
-
     </div>
   )
 }

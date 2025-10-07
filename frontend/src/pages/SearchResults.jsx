@@ -53,7 +53,7 @@ const SearchResults = () => {
   }, [query, user]);
 
   return (
-    <div className="md:ml-[320px] px-6 py-8">
+    <div className="px-6 pt-20 pb-5">
       <h1 className="text-2xl font-bold mb-4">
         Risultati per:{" "}
         <span className="text-sky-600">&quot;{query}&quot;</span>
@@ -62,7 +62,7 @@ const SearchResults = () => {
       {loading ? (
         <p>Caricamento risultati...</p>
       ) : blogs.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid  lg:grid-cols-3 md:grid-cols-2 gap-4">
           {blogs.map((blog) => (
             <BlogCardList key={blog._id} blog={blog} />
           ))}

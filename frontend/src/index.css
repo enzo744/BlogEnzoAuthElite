@@ -119,9 +119,12 @@
   }
 }
 
-Aggiungi questa regola nel tuo file index.css
+/* Aggiungi questa regola nel tuo file index.css */
 .dark .blog-content * {
   color: var(--foreground) !important;
+}
+.blog-content * {
+  color: var(--primary) !important;
 }
 
 .jodit_toolbar {

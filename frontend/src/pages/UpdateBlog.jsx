@@ -329,7 +329,7 @@ const UpdateBlog = () => {
   };
 
   return (
-    <div className="printable-page pb-5  pt-20 md:ml-[320px] flex-wrap">
+    <div className="printable-page pb-5 bg-gray-200  pt-20 lg:ml-[285px] flex-wrap">
       <div className="max-w-6xl mx-auto mt-6 px-3">
         <Card className="w-full bg-white dark:bg-gray-800 p-5">
           <h1 className="text-4xl font-bold">Informazioni sul blog</h1>
@@ -512,7 +512,7 @@ const UpdateBlog = () => {
           <div className="flex gap-3 items-center justify-center">
             <Button variant="outline" onClick={() => navigate(-1)}>
               Back
-            </Button>
+            </Button> 
             <Button
               className="text-purple-600 hover:text-slate-700 hover:bg-linear-to-r hover:from-purple-500 hover:to-indigo-500 border border-purple-500 hover:border-purple-700 bg-orange-200 dark:bg-orange-300"
               onClick={() => setOpenEncryptDecryptModal(true)}

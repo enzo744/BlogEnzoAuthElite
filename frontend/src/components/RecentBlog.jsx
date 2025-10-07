@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BlogCardList from "./BlogCardList";
 import { Badge } from "./ui/badge";
@@ -27,17 +27,11 @@ const tags = [
   {
     category: "Photography",
   },
-  {
-    category: "Sports",
-  },
 ];
 const RecentBlog = () => {
   const { blog } = useSelector((store) => store.blog);
-  // eslint-disable-next-line no-unused-vars
-  const [category, setCategory] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // console.log(blog);
 
   useEffect(() => {
     const getAllPublsihedBlogs = async () => {
@@ -58,12 +52,12 @@ const RecentBlog = () => {
   }, []);
 
   return (
-    <div className="bg-sky-100 dark:bg-gray-800 pb-10">
+    <div className="bg-gray-50 dark:bg-gray-800">
       <div className="max-w-6xl mx-auto  flex flex-col space-y-4 items-center">
         <h1 className="text-4xl font-bold pt-10 ">Blogs Recenti</h1>
         <hr className=" w-48 text-center border-2 border-red-600 rounded-full" />
       </div>
-      <div className="max-w-7xl mx-auto flex gap-6">
+      <div className="max-w-7xl mx-auto md:p-5 flex gap-6">
         <div>
           <div className="mt-10 px-4 md:px-0">
             {blog?.slice(0, 4)?.map((blog, index) => {
@@ -71,7 +65,7 @@ const RecentBlog = () => {
             })}
           </div>
         </div>
-        <div className="bg-sky-50 hidden md:block dark:bg-gray-700 w-[700px] p-5 rounded-md mt-10">
+        <div className="bg-sky-100 hidden md:block dark:bg-gray-700 w-[700px] p-5 rounded-md mt-10">
           <h1 className="text-2xl font-semibold">Categorie più popolari</h1>
           <div className="my-5 flex flex-wrap gap-3">
             {tags.map((item, index) => {

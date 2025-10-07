@@ -109,7 +109,7 @@ const CreateBlog = () => {
     }
   };
   return (
-    <div className="p-4 md:pr-20 h-screen md:ml-[320px] pt-20">
+    <div className="p-4 h-screen lg:ml-[280px] pt-20">
       <Card className="md:p-10 p-4 dark:bg-gray-800">
         <h1 className="text-2xl font-bold">Creiamo un blog</h1>
         <span className="text-sm">
