@@ -18,6 +18,7 @@ import EncryptDecrypt from "@/components/EncryptDecrypt";
 import { FilePenLine, LockKeyhole, Printer, Search } from "lucide-react";
 
 const VistaTabellare = () => {
+  const [showContentOnMobile, setShowContentOnMobile] = useState(false);
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,12 +31,15 @@ const VistaTabellare = () => {
   const fetchAllBlogs = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/get-own-blogs`, {
+      const res = await axios.get(
+        `https://blogenzoauthelite.onrender.com/blog/get-own-blogs`,
+        {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
           withCredentials: true,
-        });
+        }
+      );
 
       if (res.data.success) {
         setBlogs(res.data.blogs);
@@ -78,23 +82,34 @@ const VistaTabellare = () => {
     );
   }
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
+    if (window.innerWidth < 768) {
+      // Se siamo su mobile, mostra temporaneamente il contenuto
+      setShowContentOnMobile(true);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Aspetta che il DOM si aggiorni
+    }
+
     window.print();
+
+    // Dopo la stampa, nascondi di nuovo se eravamo su mobile
+    if (window.innerWidth < 768) {
+      setTimeout(() => setShowContentOnMobile(false), 1000);
+    }
   };
   const handleDownloadPDF = () => {
     window.print();
-  }
+  };
 
   return (
     <div className="printable-page pt-20 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700 ">
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
         
-        <div className="flex flex-col md:flex md:flex-grow overflow-hidden printable-page  print:block">
+        <div className={`${showContentOnMobile ? 'block' : 'hidden'} md:flex md:flex-col md:flex-grow overflow-hidden printable-page`}>
           <p className="text-red-600 text-lg font-semibold">
-            - Contenuti della pagina visibili solo su PC o Tablet - 
+            - Contenuti della pagina visibili solo su PC o Tablet -
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
-        {/* Bottone Print/Download visibile su mobile */}
+          {/* Bottone Print/Download visibile su mobile */}
           <div className="flex mt-6  justify-center">
             <Button onClick={handleDownloadPDF} className="">
               <Printer className="mr-2 h-4 w-4" />
@@ -137,7 +152,10 @@ const VistaTabellare = () => {
                 </div>
 
                 {/* Bottone Cripta/Decripta */}
-                <Button onClick={() => setIsModalOpen(true)} className="no-print">
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  className="no-print"
+                >
                   <LockKeyhole className="mr-2 h-4 w-4" />
                   Cripta/Decripta
                 </Button>
