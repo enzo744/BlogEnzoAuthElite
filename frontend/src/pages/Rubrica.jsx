@@ -78,18 +78,22 @@ const Rubrica = () => {
   const handlePrint = () => {
     window.print();
   };
+  const handleDownloadPDF = () => {
+    window.print();
+  }
 
   return (
     <div className="printable-page pt-15 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
+        
         <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
             - Contenuti della pagina visibili solo su PC o Tablet - 
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
         {/* Bottone Print/Download visibile su mobile */}
-          <div className="mt-6 flex justify-center">
-            <Button onClick={handlePrint} className="no-print">
+          <div className="flex mt-6  justify-center">
+            <Button onClick={handleDownloadPDF} className="">
               <Printer className="mr-2 h-4 w-4" />
               Print or Download
             </Button>
