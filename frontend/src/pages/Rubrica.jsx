@@ -68,14 +68,6 @@ const Rubrica = () => {
     setFilteredBlogs(filtered);
   }, [blogs, searchTerm]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen md:ml-[320px]">
-        <p>Caricamento dati...</p>
-      </div>
-    );
-  }
-
   const handlePrint = async () => {
   if (window.innerWidth < 768) {
     // Se siamo su mobile, mostra temporaneamente il contenuto
@@ -90,30 +82,39 @@ const Rubrica = () => {
     setTimeout(() => setShowContentOnMobile(false), 1000);
   }
 };
-  const handleDownloadPDF = () => {
-    window.print();
+
+if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen md:ml-[320px]">
+        <p>Caricamento dati...</p>
+      </div>
+    );
   }
 
   return (
     <div className="printable-page pt-15 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700">
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
-        
-        <div className={`${showContentOnMobile ? 'block' : 'hidden'} md:flex md:flex-col md:flex-grow overflow-hidden printable-page`}>
+
+        {/* ✅ Blocco MOBILE SEMPRE visibile con pulsante stampa */}
+        <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
-            - Contenuti della pagina visibili solo su PC o Tablet - 
+            - Contenuti della pagina visibili solo su PC o Tablet -
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
-        {/* Bottone Print/Download visibile su mobile */}
-          <div className="flex mt-6  justify-center">
-            <Button onClick={handleDownloadPDF} className="">
+
+          {/* Bottone Print/Download visibile su mobile */}
+          <div className="flex mt-6 justify-center">
+            <Button onClick={handlePrint}>
               <Printer className="mr-2 h-4 w-4" />
               Print or Download
             </Button>
           </div>
         </div>
-        
-        {/* Contenuto principale solo su tablet/desktop */}
-        <div className="hidden md:flex md:flex-col md:flex-grow overflow-hidden">
+
+        {/* ✅ Contenuto principale stampabile */}
+        <div
+          className={`${showContentOnMobile ? 'block' : 'hidden'} md:flex md:flex-col md:flex-grow overflow-hidden`}
+        >
           <div className="flex-shrink-0 py-6">
             <div className="flex flex-col xl:flex-row lg:items-center lg:justify-between gap-4">
               <h1 className="text-2xl lg:text-3xl font-semibold">
@@ -121,14 +122,12 @@ const Rubrica = () => {
               </h1>
               <h2>
                 {filteredBlogs.length > 0
-                  ? `Voci trovate : ${filteredBlogs.length} blog${
-                      filteredBlogs.length > 1 ? "s" : ""
-                    }`
+                  ? `Voci trovate : ${filteredBlogs.length} blog${filteredBlogs.length > 1 ? "s" : ""}`
                   : "Nessun blog trovato con i campi liberi compilati."}
               </h2>
 
               <div className="flex gap-4 items-center">
-                {/* Campo ricerca con lente */}
+                {/* Campo ricerca */}
                 <div className="relative no-print">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
                   <input
@@ -144,8 +143,9 @@ const Rubrica = () => {
                     className="pl-10 pr-3 py-2 border border-gray-500 rounded text-sm md:text-base dark:bg-gray-700 dark:text-white dark:border-gray-500"
                   />
                 </div>
-                {/* Bottone Print */}
-                <Button onClick={handlePrint} className="no-print">
+
+                {/* Bottone stampa visibile anche su desktop */}
+                <Button onClick={handlePrint}>
                   <Printer className="mr-2 h-4 w-4" />
                   Print or Download
                 </Button>
@@ -153,22 +153,18 @@ const Rubrica = () => {
             </div>
           </div>
 
-          {/* Tabella dei blog */}
-          <div className="printable-page overflow-y-auto flex-grow p-5 rounded-lg border  bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800">
+          {/* Tabella */}
+          <div className="printable-page overflow-y-auto flex-grow p-5 rounded-lg border bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
               <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
                 {filteredBlogs.length > 0
-                  ? `Panoramica dei tuoi blog con campi compilati: ${
-                      filteredBlogs.length
-                    } blog${filteredBlogs.length > 1 ? "s" : ""}`
+                  ? `Panoramica dei tuoi blog con campi compilati: ${filteredBlogs.length} blog${filteredBlogs.length > 1 ? "s" : ""}`
                   : "Nessun blog trovato con i campi compilati."}
               </TableCaption>
               <TableHeader className="sticky top-0 bg-gray-100 z-10 border border-gray-200 dark:border-gray-400">
                 <TableRow>
                   <TableHead className="w-[20%] font-bold">Titolo</TableHead>
-                  <TableHead className="w-[74%] font-bold">
-                    Descrizione
-                  </TableHead>
+                  <TableHead className="w-[74%] font-bold">Descrizione</TableHead>
                   <TableHead className="w-[6%] font-bold text-center border border-gray-200 dark:border-gray-400">
                     <Button variant="ghost" size="icon">
                       <FilePenLine className="text-gray-600 dark:text-gray-300" />
@@ -184,11 +180,10 @@ const Rubrica = () => {
                       {blog.title}
                     </TableCell>
                     <TableCell className="truncate md:whitespace-normal md:break-words border border-gray-200 dark:border-gray-400">
-                      {/* {blog.description} */}
                       <span
                         className="blog-content"
                         dangerouslySetInnerHTML={{ __html: blog.description }}
-                        ></span>
+                      ></span>
                     </TableCell>
                     <TableCell className="text-center border border-gray-200 dark:border-gray-400">
                       <Button

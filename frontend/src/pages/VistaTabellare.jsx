@@ -74,14 +74,6 @@ const VistaTabellare = () => {
     setFilteredBlogs(filtered);
   }, [blogs, searchTerm]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen md:ml-[320px]">
-        <p>Caricamento dati...</p>
-      </div>
-    );
-  }
-
   const handlePrint = async () => {
     if (window.innerWidth < 768) {
       // Se siamo su mobile, mostra temporaneamente il contenuto
@@ -96,22 +88,28 @@ const VistaTabellare = () => {
       setTimeout(() => setShowContentOnMobile(false), 1000);
     }
   };
-  const handleDownloadPDF = () => {
-    window.print();
-  };
+
+  if (isLoading) {
+  return (
+    <div className="flex items-center justify-center h-screen md:ml-[320px]">
+      <p>Caricamento dati...</p>
+    </div>
+  );
+}
 
   return (
     <div className="printable-page pt-20 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700 ">
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
         
-        <div className={`${showContentOnMobile ? 'block' : 'hidden'} md:flex md:flex-col md:flex-grow overflow-hidden printable-page`}>
+        {/* ✅ Blocco MOBILE SEMPRE visibile con pulsante stampa */}
+        <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
             - Contenuti della pagina visibili solo su PC o Tablet -
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
           {/* Bottone Print/Download visibile su mobile */}
           <div className="flex mt-6  justify-center">
-            <Button onClick={handleDownloadPDF} className="">
+            <Button onClick={handlePrint} className="">
               <Printer className="mr-2 h-4 w-4" />
               Print or Download
             </Button>
@@ -119,7 +117,9 @@ const VistaTabellare = () => {
         </div>
 
         {/* Contenuto principale solo su tablet/desktop */}
-        <div className="hidden md:flex md:flex-col md:flex-grow overflow-hidden">
+        <div
+          className={`${showContentOnMobile ? 'block' : 'hidden'} md:flex md:flex-col md:flex-grow overflow-hidden`}
+        >
           <div className="flex-shrink-0 py-6">
             <div className="flex flex-col xl:flex-row lg:items-center lg:justify-between gap-4">
               <h1 className="text-2xl lg:text-3xl font-bold">
