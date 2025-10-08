@@ -89,7 +89,7 @@ const VistaTabellare = () => {
     <div className="printable-page pt-20 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700 ">
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
         
-        <div className="block md:hidden text-center py-20">
+        <div className="flex flex-col md:flex md:flex-grow overflow-hidden printable-page  print:block">
           <p className="text-red-600 text-lg font-semibold">
             - Contenuti della pagina visibili solo su PC o Tablet - 
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
