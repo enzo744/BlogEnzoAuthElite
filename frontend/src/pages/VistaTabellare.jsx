@@ -87,8 +87,16 @@ const VistaTabellare = () => {
       <div className="max-w-7xl mx-auto px-4 w-full flex flex-col flex-grow overflow-hidden">
         <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
-            Pagina visibile solo su PC o Tablet
+            - Contenuti della pagina visibili solo su PC o Tablet - 
+            <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
+        {/* Bottone Print/Download visibile su mobile */}
+          <div className="mt-6 flex justify-center">
+            <Button onClick={handlePrint} className="">
+              <Printer className="mr-2 h-4 w-4" />
+              Print or Download
+            </Button>
+          </div>
         </div>
 
         {/* Contenuto principale solo su tablet/desktop */}
@@ -108,7 +116,7 @@ const VistaTabellare = () => {
 
               <div className="flex gap-4 items-center">
                 {/* Campo ricerca con lente */}
-                <div className="relative">
+                <div className="relative no-print">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
                   <input
                     type="text"
@@ -125,7 +133,7 @@ const VistaTabellare = () => {
                 </div>
 
                 {/* Bottone Cripta/Decripta */}
-                <Button onClick={() => setIsModalOpen(true)}>
+                <Button onClick={() => setIsModalOpen(true)} className="no-print">
                   <LockKeyhole className="mr-2 h-4 w-4" />
                   Cripta/Decripta
                 </Button>

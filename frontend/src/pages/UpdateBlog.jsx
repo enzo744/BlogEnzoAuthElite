@@ -333,11 +333,11 @@ const UpdateBlog = () => {
       <div className="max-w-6xl mx-auto mt-6 px-3">
         <Card className="w-full bg-white dark:bg-gray-800 p-5">
           <h1 className="text-4xl font-bold">Informazioni sul blog</h1>
-          <span className="text-sm">
+          <span className="text-sm no-print">
             Apporta modifiche ai tuoi blog qui. Clicca su Pubblica quando hai
             finito e se vuoi renderlo visibile a tutti gli utenti loggati.
           </span>
-          <div className="flex flex-col sm:flex-row justify-center gap-2 my-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-5 my-4 no-print">
           
             <Button onClick={() => togglePublishUnpublish()} className="w-full sm:w-[180px]">
               {publish ? "UnPublish" : "Publish"}

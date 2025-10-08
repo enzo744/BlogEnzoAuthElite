@@ -34,7 +34,7 @@ const SearchBar = ({ onSearch, onReset, resetSignal }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2 my-6 items-center">
+    <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-2 my-6 items-center no-print">
       <Input
         type="text"
         placeholder="Cerca nei tuoi blog..."

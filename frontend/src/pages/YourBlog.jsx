@@ -211,7 +211,7 @@ const YourBlog = () => {
             : "Nessun blog creato."}
         </h3>
         {/* Bottone Print */}
-        <Button onClick={handlePrint} className="mb-2 w-wrap">
+        <Button onClick={handlePrint} className="mb-2 w-wrap no-print">
           <Printer className="h-4 w-4" />
           Print or Download
         </Button>
@@ -309,7 +309,7 @@ const YourBlog = () => {
 
         {/* Paginazione */}
         {totalPages > 1 && !isSearching && (
-          <div className="flex items-center justify-center mt-4 space-x-2">
+          <div className="flex items-center justify-center mt-4 space-x-2  no-print">
             <Button
               onClick={() => setCurrentPage(1)}
               variant="outline"
