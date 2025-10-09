@@ -27,11 +27,9 @@ app.use("/blog", blogRoute);
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
- app.get("*", (_, res)=>{
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
- });
- 
+//  app.get("*", (_, res)=>{
+//     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
+//  });
 
 app.listen(PORT, () => {
   connectDB();
