@@ -1,19 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
-// import { createContext, useContext, useState } from "react";
-
-// export const UserContext = createContext(null)
-
-// export const UserProvider = ({ children }) => {
-//     const [user, setUser] = useState(null)
-//     return <UserContext.Provider value={{ user, setUser }}>
-//         {children}
-//     </UserContext.Provider>
-// }
-
-// export const getData = () => useContext(UserContext) 
-
 import { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // <-- 1. IMPORTA useNavigate
+import axios from "axios"; // <-- 1. IMPORTA axios
+import { toast } from "sonner"; // <-- 1. IMPORTA sonner per le notifiche
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
@@ -28,6 +18,8 @@ export const UserProvider = ({ children }) => {
         }
     });
 
+    const navigate = useNavigate(); // <-- 2. INIZIALIZZA useNavigate
+
     // 2. Sincronizza lo stato React con localStorage ogni volta che lo stato "user" cambia
     useEffect(() => {
         if (user) {
@@ -39,12 +31,42 @@ export const UserProvider = ({ children }) => {
         }
     }, [user]);
 
+        // --- 3. CREA LA FUNZIONE DI LOGOUT CENTRALIZZATA ---
+  const logout = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        await axios.post(
+          `https://blogenzoauthelite.onrender.com/user/logout`,
+          {},
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+      }
+      toast.success("Logout effettuato con successo.");
+    } catch (error) {
+      console.error("Errore durante il logout API:", error);
+      toast.error("Errore durante il logout, verrai disconnesso localmente.");
+    } finally {
+      // Questa parte viene eseguita sempre, garantendo il logout
+      localStorage.clear(); // Pulisce tutto lo storage (token, user, etc.)
+      setUser(null);     // Resetta lo stato ALLA FINE
+      navigate("/", { replace: true }); // ⬅️ POI naviga alla home
+    }
+  };
+
+  // --- 4. AGGIUNGI 'logout' AL VALORE DEL CONTEXT ---
+  const value = {
+    user,
+    setUser,
+    logout, // Esponi la funzione logout
+  };
+
+
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={value}>
             {children}
         </UserContext.Provider>
     );
 };
-
-// eslint-disable-next-line react-hooks/rules-of-hooks
+// eslint-disable-next-line react-refresh/only-export-components, react-hooks/rules-of-hooks
 export const getData = () => useContext(UserContext);

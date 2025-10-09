@@ -1,12 +1,12 @@
 import { getData } from '@/context/userContext'
 import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarImage } from "./ui/avatar";
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { FaUserCircle } from 'react-icons/fa';
 
-const ResponsiveMenu = ({ openNav, setOpenNav, logoutHandler }) => {
-    const { user } = getData()
+const ResponsiveMenu = ({ openNav, setOpenNav }) => {
+    const { user, logout } = getData()
   return (
     <div
       className={`${
@@ -40,13 +40,7 @@ const ResponsiveMenu = ({ openNav, setOpenNav, logoutHandler }) => {
               <li className="cursor-pointer">About</li>
             </Link>
             {user ? (
-              <Button
-                onClick={() => {
-                  logoutHandler(), setOpenNav(false);
-                }}
-              >
-                Logout
-              </Button>
+              <Button onClick={logout}>Logout</Button>
             ) : (
               <Link to={"/signup"} onClick={() => setOpenNav(false)}>
                 <Button>Signup</Button>
@@ -55,7 +49,7 @@ const ResponsiveMenu = ({ openNav, setOpenNav, logoutHandler }) => {
           </ul>
         </nav>
       </div>
-      <div className="pb-20">
+      <div className="pb-30">
         <h1>Made by Enzo ❤️</h1>
       </div>
     </div>

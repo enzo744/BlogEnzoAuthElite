@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { Toaster } from "./components/ui/sonner";
-import { UserProvider } from "./context/userContext";
 
 // Importare i componenti di Redux
 import { Provider } from "react-redux";
@@ -20,11 +19,9 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider>
-          <UserProvider>
             {" "}
             {/* Provider di Context */}
             <App />
-          </UserProvider>
         </ThemeProvider>
       </PersistGate>
     </Provider>

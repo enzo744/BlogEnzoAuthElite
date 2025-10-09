@@ -27,7 +27,7 @@ import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
 import { LuFilePlus2 } from "react-icons/lu";
 
 const Navbar = () => {
-  const { user, setUser } = getData();
+  const { user, setUser, logout } = getData();
   const { theme } = useSelector((store) => store.theme);
   const [searchTerm, setSearchTerm] = useState(""); // Questo stato viene usato per la ricerca
   const [openNav, setOpenNav] = useState(false);
@@ -51,11 +51,14 @@ const Navbar = () => {
         setUser(null);
         toast.success(res.data.message);
         localStorage.clear();
-        navigate("/")
+        // navigate("/")
+        return true; // <-- RESTITUISCI TRUE IN CASO DI SUCCESSO
       }
     } catch (error) {
       console.log(error);
+      return false; // <-- RESTITUISCI FALSE IN CASO DI ERRORE
     }
+    return false; // Assicurati che ritorni sempre un valore
   };
 
   const handleSearch = (e) => {
@@ -178,7 +181,13 @@ const Navbar = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
                 {/* </Link> */}
-                <Button className="hidden md:block" onClick={logoutHandler}>
+                {/* <Button className="hidden md:block" onClick={logoutHandler}>
+                  Logout
+                </Button> */}
+                {/*  Dentro il return di Navbar.jsx */}
+                <Button className="hidden md:block"
+                  onClick={logout}
+                >
                   Logout
                 </Button>
               </div>
