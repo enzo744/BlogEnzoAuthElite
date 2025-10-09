@@ -4,7 +4,7 @@ const BlogCardList = ({ blog }) => {
   const date = new Date(blog.createdAt);
   const formattedDate = date.toLocaleDateString("it-IT");
   return (
-    <div className="bg-sky-200 dark:bg-gray-700 dark:border-gray-600 flex flex-col lg:flex-row md:gap-12 rounded-2xl mt-4 p-2 shadow-lg border transition-all">
+    <div className="bg-sky-100 dark:bg-gray-700 dark:border-gray-600 flex flex-col lg:flex-row md:gap-12 rounded-2xl mt-4 p-2 shadow-lg border transition-all">
       <div>
         {blog.thumbnail ? (
           <img

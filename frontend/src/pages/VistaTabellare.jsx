@@ -78,24 +78,24 @@ const VistaTabellare = () => {
     if (window.innerWidth < 768) {
       // Se siamo su mobile, mostra temporaneamente il contenuto
       setShowContentOnMobile(true);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Aspetta che il DOM si aggiorni
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Aspetta che il DOM si aggiorni
     }
 
     window.print();
 
     // Dopo la stampa, nascondi di nuovo se eravamo su mobile
     if (window.innerWidth < 768) {
-      setTimeout(() => setShowContentOnMobile(false), 1000);
+      setTimeout(() => setShowContentOnMobile(false), 500);
     }
   };
 
   if (isLoading) {
-  return (
-    <div className="flex items-center justify-center h-screen md:ml-[320px]">
-      <p>Caricamento dati...</p>
-    </div>
-  );
-}
+    return (
+      <div className="flex items-center justify-center h-screen md:ml-[320px]">
+        <p>Caricamento dati...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="printable-page pt-20 lg:ml-[300px] bg-white flex flex-col dark:bg-gray-700 ">
@@ -104,12 +104,13 @@ const VistaTabellare = () => {
         {/* ✅ Blocco MOBILE SEMPRE visibile con pulsante stampa */}
         <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
-            - Contenuti della pagina visibili solo su PC o Tablet -
+            - Contenuti della Lista visibili solo su PC o Tablet - 
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
-          {/* Bottone Print/Download visibile su mobile */}
+
+        {/* Bottone Print/Download visibile su mobile */}
           <div className="flex mt-6  justify-center">
-            <Button onClick={handlePrint} className="">
+            <Button onClick={handlePrint} className="no-print">
               <Printer className="mr-2 h-4 w-4" />
               Print or Download
             </Button>
@@ -152,10 +153,7 @@ const VistaTabellare = () => {
                 </div>
 
                 {/* Bottone Cripta/Decripta */}
-                <Button
-                  onClick={() => setIsModalOpen(true)}
-                  className="no-print"
-                >
+                <Button onClick={() => setIsModalOpen(true)} className="no-print">
                   <LockKeyhole className="mr-2 h-4 w-4" />
                   Cripta/Decripta
                 </Button>
@@ -168,8 +166,8 @@ const VistaTabellare = () => {
             </div>
           </div>
 
-          {/* Tabella dei blog */}
-          <div className="overflow-y-auto flex-grow p-5 rounded-lg border bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800 printable-page">
+          {/* ✅ Contenuto principale stampabile  */}
+          <div className="printable-page overflow-y-auto flex-grow p-5 rounded-lg border bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
               <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
                 {filteredBlogs.length > 0
@@ -188,7 +186,7 @@ const VistaTabellare = () => {
                     Campo Libero 2
                   </TableHead>
                   <TableHead className="w-[6%] font-bold text-center border border-gray-200 dark:border-gray-400">
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="no-print">
                       <FilePenLine className="text-gray-600 dark:text-gray-300" />
                     </Button>
                   </TableHead>
@@ -209,6 +207,7 @@ const VistaTabellare = () => {
                     </TableCell>
                     <TableCell className="text-center border border-gray-200 dark:border-gray-400">
                       <Button
+                      className="no-print"
                         variant="ghost"
                         size="icon"
                         onClick={() =>

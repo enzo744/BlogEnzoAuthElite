@@ -69,11 +69,11 @@ const Rubrica = () => {
   }, [blogs, searchTerm]);
 
   const handlePrint = async () => {
-  if (window.innerWidth < 768) {
-    // Se siamo su mobile, mostra temporaneamente il contenuto
-    setShowContentOnMobile(true);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Aspetta che il DOM si aggiorni
-  }
+    if (window.innerWidth < 768) {
+      // Se siamo su mobile, mostra temporaneamente il contenuto
+      setShowContentOnMobile(true);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Aspetta che il DOM si aggiorni
+    }
 
   window.print();
 
@@ -98,20 +98,20 @@ if (isLoading) {
         {/* ✅ Blocco MOBILE SEMPRE visibile con pulsante stampa */}
         <div className="block md:hidden text-center py-20">
           <p className="text-red-600 text-lg font-semibold">
-            - Contenuti della pagina visibili solo su PC o Tablet -
+            - Contenuti della Rubrica visibili solo su PC o Tablet -
             <br /> Tuttavia puoi stampare o scaricare questa pagina.
           </p>
 
           {/* Bottone Print/Download visibile su mobile */}
           <div className="flex mt-6 justify-center">
-            <Button onClick={handlePrint}>
+            <Button onClick={handlePrint} className="no-print">
               <Printer className="mr-2 h-4 w-4" />
               Print or Download
             </Button>
           </div>
         </div>
 
-        {/* ✅ Contenuto principale stampabile */}
+        {/* Contenuto principale su tablet/desktop */}
         <div
           className={`${showContentOnMobile ? 'block' : 'hidden'} md:flex md:flex-col md:flex-grow overflow-hidden`}
         >
@@ -123,7 +123,7 @@ if (isLoading) {
               <h2>
                 {filteredBlogs.length > 0
                   ? `Voci trovate : ${filteredBlogs.length} blog${filteredBlogs.length > 1 ? "s" : ""}`
-                  : "Nessun blog trovato con i campi liberi compilati."}
+                  : "Nessun blog trovato con i campi compilati."}
               </h2>
 
               <div className="flex gap-4 items-center">
@@ -144,8 +144,8 @@ if (isLoading) {
                   />
                 </div>
 
-                {/* Bottone stampa visibile anche su desktop */}
-                <Button onClick={handlePrint}>
+                {/* Bottone Print */}
+                <Button onClick={handlePrint} className="no-print">
                   <Printer className="mr-2 h-4 w-4" />
                   Print or Download
                 </Button>
@@ -153,7 +153,7 @@ if (isLoading) {
             </div>
           </div>
 
-          {/* Tabella */}
+          {/* Contenuto principale stampabile */}
           <div className="printable-page overflow-y-auto flex-grow p-5 rounded-lg border bg-gray-100 text-card-foreground shadow-sm dark:bg-gray-800">
             <Table className="table-fixed w-full">
               <TableCaption className="mb-4 text-xl text-gray-800 dark:text-gray-200">
@@ -166,7 +166,7 @@ if (isLoading) {
                   <TableHead className="w-[20%] font-bold">Titolo</TableHead>
                   <TableHead className="w-[74%] font-bold">Descrizione</TableHead>
                   <TableHead className="w-[6%] font-bold text-center border border-gray-200 dark:border-gray-400">
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="no-print">
                       <FilePenLine className="text-gray-600 dark:text-gray-300" />
                     </Button>
                   </TableHead>
@@ -187,6 +187,7 @@ if (isLoading) {
                     </TableCell>
                     <TableCell className="text-center border border-gray-200 dark:border-gray-400">
                       <Button
+                      className="no-print"
                         variant="ghost"
                         size="icon"
                         onClick={() =>

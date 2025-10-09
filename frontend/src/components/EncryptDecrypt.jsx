@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils"; // <-- AGGIUNGI QUESTO IMPORT
 import { useRef, useState, useEffect } from "react"; // Aggiunto useEffect
 import CryptoJS from "crypto-js";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,6 @@ const EncryptDecrypt = () => {
     }
   };
 
-  // Decrypt user input text
   const decryptData = () => {
   try {
     const cleanedText = text.trim(); // ✅ Elimina solo spazi iniziali/finali
@@ -93,14 +93,15 @@ const EncryptDecrypt = () => {
         <Button
           variant={screen === "encrypt" ? "secondary" : "ghost"}
           onClick={() => switchScreen("encrypt")}
-          className="w-1/2 border-2 border-slate-500 hover:text-amber-500"
+          className="w-1/2 border-2 encrypt-btn hover:bg-amber-500"
         >
           Cripta
         </Button>
         <Button
           variant={screen === "decrypt" ? "secondary" : "ghost"}
           onClick={() => switchScreen("decrypt")}
-          className="w-1/2 border-2 border-slate-500 hover:text-amber-500"
+          // className="w-1/2 border-2 border-slate-500 hover:text-amber-500"
+          className="w-1/2 border-2 decrypt-btn hover:bg-amber-500"
         >
           Decripta
         </Button>
@@ -122,14 +123,22 @@ const EncryptDecrypt = () => {
         />
 
         {errorMessage && (
-          <p className="text-sm text-red-500 text-center">{errorMessage}</p>
+          <p className="text-sm error text-center">{errorMessage}</p>
         )}
 
-        <Button onClick={handleClick} className="w-full">
+        <Button
+          onClick={handleClick}
+          className={cn(
+            "w-full  text-white", // Classi di base
+            {
+              "encrypt-btn": screen === "encrypt", // Blu se cripti
+              "decrypt-btn": screen === "decrypt",   // Rosso se decripti
+            }
+          )}
+        >
           {screen === "encrypt" ? "Cripta Testo" : "Decripta Testo"}
         </Button>
       </div>
-
 
       {/* Sezione per mostrare il risultato */}
       {(encryptedData || decryptedData) && (
