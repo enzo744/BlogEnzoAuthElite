@@ -1,19 +1,27 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+} from "react-router-dom";
+
+// Importa i provider e i componenti di layout
+import { UserProvider } from "./context/userContext";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Importa le tue pagine
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import VerifyEmail from "./pages/VerifyEmail";
 import Verify from "./pages/Verify";
-import Navbar from "./components/Navbar";
-import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ChangePassword from "./pages/ChangePassword";
 import About from "./pages/About";
-import Footer from "./components/Footer";
 import Blog from "./pages/Blog";
-import SearchList from "./pages/SearchList";
 import BlogView from "./pages/BlogView";
 import CreateBlog from "./pages/CreateBlog";
 import Profile from "./pages/Profile";
@@ -24,196 +32,89 @@ import VistaTabellare from "./pages/VistaTabellare";
 import SearchResults from "./pages/SearchResults";
 import Rubrica from "./pages/Rubrica";
 
+// --- LAYOUT PRINCIPALE (CON LA CORREZIONE) ---
+const AppLayout = () => {
+  return (
+    <UserProvider>
+      <Navbar />
+      <main className=""> {/* <-- CORREZIONE APPLICATA QUI */}
+        <Outlet />
+      </main>
+      <Footer />
+    </UserProvider>
+  );
+};
+
+// --- LAYOUT DEL DASHBOARD ---
+const DashboardLayout = () => {
+  return (
+    <UserProvider>
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    </UserProvider>
+  );
+};
+
+// --- CONFIGURAZIONE DEL ROUTER ---
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: (
-      <>
-        <Navbar />
-        <Home />
-        <Footer />
-      </>
-    ),
-  },
-  {
-    path: "/blogs",
-    element: (
-      <>
-        <Navbar />
-        <Blog />
-        <Footer />
-      </>
-    ),
-  },
-  {
-    path: "/about",
-    element: (
-      <>
-        <Navbar />
-        <About />
-        <Footer />
-      </>
-    ),
-  },
-  {
-    path: "/search",
-    element: (
-      <>
-        <Navbar />
-        <SearchResults />
-        <Footer />
-      </>
-    ),
-  },
-  {
-    path: "/search",
-    element: (
-      <>
-        <Navbar />
-        <SearchList />
-        <Footer />
-      </>
-    ),
-  },
-  {
-    path: "/blogs/:blogId",
-    element: (
-      <>
-        <Navbar />
-        <ProtectedRoute>
-          <BlogView />
-        </ProtectedRoute>
-      </>
-    ),
-  },
-  {
-    path: "/write-blog",
-    element: (
-      <>
-        <Navbar />
-        <CreateBlog />
-      </>
-    ),
-  },
-  {
-    path: "/profile",
-    element: (
-      <>
-        <Navbar />
-        <Profile />
-        <Footer />
-      </>
-    ),
-  },
-  {
-    path: "write-blog/:blogId",
-    element: (
-      <>
-        <Navbar />
-        <CreateBlog />
-      </>
-    ),
-  },
-  {
-    path: "/dashboard",
-    element: (
-      <>
-        <Navbar />
-        <Dashboard />
-      </>
-    ),
-  },
-  {
-    path: "/dashboard",
-    element: (
-      <>
-        <Navbar />
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      </>
-    ),
+    element: <AppLayout />,
     children: [
+      { path: "/", element: <Home /> },
+      { path: "/blogs", element: <Blog /> },
+      { path: "/about", element: <About /> },
+      { path: "/search", element: <SearchResults /> },
+      { path: "/profile", element: <Profile /> },
       {
-        path: "write-blog",
+        path: "/blogs/:blogId",
         element: (
-          <>
-            <CreateBlog />
-          </>
+          <ProtectedRoute>
+            <BlogView />
+          </ProtectedRoute>
         ),
-      },
-      {
-        path: "write-blog/:blogId",
-        element: (
-          <>
-            <UpdateBlog />
-          </>
-        ),
-      },
-      {
-        path: "your-blog",
-        element: <YourBlog />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "vista-tabellare",
-        element: <VistaTabellare />,
-      },
-      {
-        path: "rubrica",
-        element: <Rubrica />,
       },
     ],
   },
   {
-    path: "/signup",
-    element: (
-      <>
-        <Navbar />
-        <Signup />
-      </>
-    ),
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      { path: "write-blog", element: <CreateBlog /> },
+      { path: "write-blog/:blogId", element: <UpdateBlog /> },
+      { path: "your-blog", element: <YourBlog /> },
+      { path: "profile", element: <Profile /> },
+      { path: "vista-tabellare", element: <VistaTabellare /> },
+      { path: "rubrica", element: <Rubrica /> },
+    ],
   },
+  // Rotte senza layout principale
   {
     path: "/login",
     element: (
-      <>
-        <Navbar />
-        <Login />
-      </>
+      <UserProvider>
+        <Navbar /> <Login />
+      </UserProvider>
     ),
   },
   {
-    path: "/verify",
-    element: <VerifyEmail />,
+    path: "/signup",
+    element: (
+      <UserProvider>
+        <Navbar /> <Signup />
+      </UserProvider>
+    ),
   },
-  {
-    path: "/verify/:token",
-    element: <Verify />,
-  },
-  {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
-  },
-  {
-    path: "/verify-otp/:email",
-    element: <VerifyOTP />,
-  },
-  {
-    path: "/change-password/:email",
-    element: <ChangePassword />,
-  },
+  { path: "/verify", element: <VerifyEmail /> },
+  { path: "/verify/:token", element: <Verify /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
+  { path: "/verify-otp/:email", element: <VerifyOTP /> },
+  { path: "/change-password/:email", element: <ChangePassword /> },
 ]);
 
+// --- IL COMPONENTE APP ---
 const App = () => {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
