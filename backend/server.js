@@ -21,15 +21,16 @@ app.use(express.urlencoded({ extended: true }));
      credentials: true,
  }));
 
- const _dirname = path.resolve();
 
 app.use('/user', userRoute);
 app.use("/blog", blogRoute);
 
-app.use(express.static(path.join(_dirname, "/frontend/dist")));
-//  app.get("*", (_, res)=>{
-//     res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"))
-//  });
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+ app.get("*", (_, res)=>{
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
+ });
 
 app.listen(PORT, () => {
   connectDB();
