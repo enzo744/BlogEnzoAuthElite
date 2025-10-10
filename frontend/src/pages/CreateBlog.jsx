@@ -112,11 +112,11 @@ const CreateBlog = () => {
     <div className="p-4 h-screen lg:ml-[280px] pt-20">
       <Card className="md:p-10 p-4 dark:bg-gray-800">
         <h1 className="text-2xl font-bold">Creiamo un blog</h1>
-        <span className="text-sm">
-          Inserisci il titolo e seleziona la categoria per il tuo nuovo blog (campi obbligatori). <hr/>
-          Clicca su "Crea" per salvare il tuo blog e sarai reindirizzato in altra pagina <hr/>
-          dove potrai aggiungere altri campi facoltativi e contenuti per tuo blog. 
-        </span>
+        <div className="text-sm">
+          <p>Inserisci il titolo e seleziona la categoria per il tuo nuovo blog (campi obbligatori).</p>
+          <p>Clicca su "Crea" per salvare il tuo blog. Sarai reindirizzato in altra pagina</p>
+          <p>dove potrai aggiungere altri campi e contenuti per tuo nuovo blog.</p>
+        </div>
         <div className="mt-5 ">
           <div>
             <Label className="mb-2" htmlFor="blogTitle">Title</Label>

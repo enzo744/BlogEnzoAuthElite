@@ -13,8 +13,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getData } from "@/context/userContext";
-import axios from "axios";
-import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FaMoon, FaRegListAlt, FaSun } from "react-icons/fa";
@@ -27,39 +25,12 @@ import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
 import { LuFilePlus2 } from "react-icons/lu";
 
 const Navbar = () => {
-  const { user, setUser, logout } = getData();
+  const { user, logout } = getData();
   const { theme } = useSelector((store) => store.theme);
   const [searchTerm, setSearchTerm] = useState(""); // Questo stato viene usato per la ricerca
   const [openNav, setOpenNav] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const accessToken = localStorage.getItem("accessToken");
-
-  const logoutHandler = async () => {
-    try {
-      const res = await axios.post(
-        `https://blogenzoauthelite.onrender.com/user/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      if (res.data.success) {
-        setUser(null);
-        toast.success(res.data.message);
-        localStorage.clear();
-        // navigate("/")
-        return true; // <-- RESTITUISCI TRUE IN CASO DI SUCCESSO
-      }
-    } catch (error) {
-      console.log(error);
-      return false; // <-- RESTITUISCI FALSE IN CASO DI ERRORE
-    }
-    return false; // Assicurati che ritorni sempre un valore
-  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -111,9 +82,6 @@ const Navbar = () => {
             <NavLink to={"/about"} className={`cursor-pointer`}>
               <li>About</li>
             </NavLink>
-            {/* <NavLink to={'/write-blog'} className={`cursor-pointer`}><li>Nuovo Blog</li></NavLink> */}
-            {/* <NavLink to={'/dashboard/your-blog'} className={`cursor-pointer`}><li>Miei Blogs</li></NavLink> */}
-            {/* <NavLink to={'/dashboard/vista-tabellare'} className={`cursor-pointer`}><li>Lista Blogs</li></NavLink> */}
           </ul>
           <div className="flex">
             <Button onClick={() => dispatch(toggleTheme())}>
@@ -130,7 +98,7 @@ const Navbar = () => {
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56 dark:bg-gray-800">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel>Il mio account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem
@@ -138,7 +106,7 @@ const Navbar = () => {
                       >
                         <User />
                         <span>Profile</span>
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                        <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => navigate("/dashboard/your-blog")}
@@ -172,19 +140,17 @@ const Navbar = () => {
                         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={logoutHandler}>
+
+                    <DropdownMenuSeparator className=""/>
+                    {/* <DropdownMenuItem onClick={logoutHandler}> */}
+                    <DropdownMenuItem onClick={logout}>
                       <LogOut />
                       <span>Log out</span>
-                      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                      <DropdownMenuShortcut>⇧⌘L</DropdownMenuShortcut>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                {/* </Link> */}
-                {/* <Button className="hidden md:block" onClick={logoutHandler}>
-                  Logout
-                </Button> */}
-                {/*  Dentro il return di Navbar.jsx */}
+                {/* Il Button Dentro il Navbar.jsx */}
                 <Button className="hidden md:block"
                   onClick={logout}
                 >
@@ -211,7 +177,7 @@ const Navbar = () => {
         <ResponsiveMenu
           openNav={openNav}
           setOpenNav={setOpenNav}
-          logoutHandler={logoutHandler}
+          logout={logout}
         />
       </div>
     </div>
