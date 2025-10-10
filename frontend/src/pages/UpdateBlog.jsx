@@ -39,8 +39,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { lazy, Suspense } from "react";
-const JoditEditor = lazy(() => import("jodit-react"));
+// import { lazy, Suspense } from "react";
+// const JoditEditor = lazy(() => import("jodit-react"));
 
 const UpdateBlog = () => {
   getData();
@@ -59,7 +59,7 @@ const UpdateBlog = () => {
   const dispatch = useDispatch();
   const { blog } = useSelector((store) => store.blog);
 
-  const [content, setContent] = useState("");
+  // const [content, setContent] = useState("");
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const [blogData, setBlogData] = useState({
     title: "",
@@ -91,7 +91,7 @@ const UpdateBlog = () => {
           campoLibero: fetchedBlog.campoLibero || "",
           campoLibero2: fetchedBlog.campoLibero2 || "",
         });
-        setContent(fetchedBlog.description || "");
+        // setContent(fetchedBlog.description || "");
         setPreviewThumbnail(fetchedBlog.thumbnail || "");
         setPublish(fetchedBlog.isPublished || false);
       }
@@ -117,7 +117,7 @@ const UpdateBlog = () => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   };
 
-  const editor = useRef(null);
+  // const editor = useRef(null);
   const campoLibero2Ref = useRef(null);
   const [isIosDevice, setIsIosDevice] = useState(false);
 
@@ -175,7 +175,7 @@ const UpdateBlog = () => {
     }
     formData.append("title", blogData.title);
     formData.append("subtitle", blogData.subtitle);
-    formData.append("description", content);
+    formData.append("description", blogData.description);
     formData.append("category", blogData.category);
     formData.append("campoLibero", blogData.campoLibero);
     formData.append("campoLibero2", blogData.campoLibero2);
@@ -433,14 +433,15 @@ const UpdateBlog = () => {
           </div>
           <div>
             <Label className="mb-2">Description</Label>
-            <Suspense fallback={<p>Caricamento editor...</p>}>
-              <JoditEditor
-                ref={editor}
-                value={content}
-                onChange={(newContent) => setContent(newContent)}
-                className="jodit_toolbar"
-              />
-            </Suspense>
+            <Textarea
+              name="description"
+              placeholder="Scrivi qui la descrizione del blog"
+              value={blogData.description}
+              onChange={handleChange}
+              className={`w-full text-base overflow-hidden ${
+                isIosDevice ? "resize-none" : "resize-y"
+              }`}
+            />
           </div>
           <div>
             <Label className="mb-2">Category</Label>
