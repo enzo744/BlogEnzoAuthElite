@@ -39,8 +39,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-// import { lazy, Suspense } from "react";
-// const JoditEditor = lazy(() => import("jodit-react"));
 
 const UpdateBlog = () => {
   getData();
@@ -59,7 +57,6 @@ const UpdateBlog = () => {
   const dispatch = useDispatch();
   const { blog } = useSelector((store) => store.blog);
 
-  // const [content, setContent] = useState("");
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const [blogData, setBlogData] = useState({
     title: "",
@@ -74,13 +71,15 @@ const UpdateBlog = () => {
   const fetchBlog = useCallback(async () => {
     try {
       setIsFetchingBlog(true);
-      const res = await axios.get(`https://blogenzoauthelite.onrender.com/blog/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      });
-
+      const res = await axios.get(
+        `https://blogenzoauthelite.onrender.com/blog/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         const fetchedBlog = res.data.blog;
         setBlogData({
@@ -91,7 +90,6 @@ const UpdateBlog = () => {
           campoLibero: fetchedBlog.campoLibero || "",
           campoLibero2: fetchedBlog.campoLibero2 || "",
         });
-        // setContent(fetchedBlog.description || "");
         setPreviewThumbnail(fetchedBlog.thumbnail || "");
         setPublish(fetchedBlog.isPublished || false);
       }
@@ -103,30 +101,36 @@ const UpdateBlog = () => {
     } finally {
       setIsFetchingBlog(false);
     }
-  }, [id, accessToken]); // ✅ Dipendenze corrette: tutto ciò che viene usato dentro fetchBlog
+  }, [id, accessToken]); // Dipendenze corrette: tutto ciò che viene usato dentro fetchBlog
 
   // useEffect che chiama fetchBlog
   useEffect(() => {
     if (id) {
       fetchBlog();
     }
-  }, [id, fetchBlog]); // ✅ Nessun warning
+  }, [id, fetchBlog]); //Nessun warning
 
   const isIOS = () => {
     if (typeof navigator === "undefined") return false;
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   };
 
-  // const editor = useRef(null);
   const campoLibero2Ref = useRef(null);
+  const descriptionRef = useRef(null); // nuovo ref per Description
   const [isIosDevice, setIsIosDevice] = useState(false);
 
   // Rileva iOS all'avvio
   useEffect(() => {
     setIsIosDevice(isIOS());
   }, []);
-
-  // Autoresize per iOS
+  // Funzione comune per autoresize
+  const autoresize = (ref) => {
+    if (ref && ref.current && ref.current instanceof HTMLElement) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = ref.current.scrollHeight + "px";
+    }
+  };
+    // Autoresize per iOS
   useEffect(() => {
     const autoresize = (ref) => {
       if (ref && ref.current && ref.current instanceof HTMLElement) {
@@ -137,8 +141,19 @@ const UpdateBlog = () => {
 
     if (isIosDevice) {
       autoresize(campoLibero2Ref);
+      autoresize(descriptionRef); //  autoresize anche per description
     }
-  }, [isIosDevice, blogData.campoLibero2]);
+  }, [isIosDevice, blogData.campoLibero2, blogData.description]);
+
+  // Autoresize al digitare 
+  const handleChangeWithResize = (e) => {
+    handleChange(e); // tua funzione esistente
+    if (e.target.name === "campoLibero2") {
+      autoresize(campoLibero2Ref);
+    } else if (e.target.name === "description") {
+      autoresize(descriptionRef);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -220,7 +235,7 @@ const UpdateBlog = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessToken}`, // ✅ Corretto: l'header va qui
+            Authorization: `Bearer ${accessToken}`, 
           },
           withCredentials: true,
         }
@@ -285,9 +300,7 @@ const UpdateBlog = () => {
       toast.error("ID del blog non trovato.");
       return;
     }
-
     setLoading(true);
-
     try {
       const res = await axios.delete(
         `https://blogenzoauthelite.onrender.com/blog/${id}/remove-thumbnail`,
@@ -328,7 +341,8 @@ const UpdateBlog = () => {
     window.print();
   };
 
-  return (
+  
+return (
     <div className="printable-page pb-5 bg-gray-200  pt-20 lg:ml-[285px] flex-wrap">
       <div className="max-w-6xl mx-auto mt-6 px-3">
         <Card className="w-full bg-white dark:bg-gray-800 p-5">
@@ -338,8 +352,10 @@ const UpdateBlog = () => {
             finito e se vuoi renderlo visibile a tutti gli utenti loggati.
           </span>
           <div className="flex flex-col sm:flex-row justify-center gap-5 my-4 no-print">
-          
-            <Button onClick={() => togglePublishUnpublish()} className="w-full sm:w-[180px]">
+            <Button
+              onClick={() => togglePublishUnpublish()}
+              className="w-full sm:w-[180px]"
+            >
               {publish ? "UnPublish" : "Publish"}
             </Button>
             <Button onClick={handlePrint} className="w-full sm:w-[180px]">
@@ -351,7 +367,11 @@ const UpdateBlog = () => {
               onOpenChange={setIsDeleteDialogOpen}
             >
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" onClick={openDeleteDialog} className="w-full sm:w-[180px]">
+                <Button
+                  variant="destructive"
+                  onClick={openDeleteDialog}
+                  className="w-full sm:w-[180px]"
+                >
                   Remove Blog
                 </Button>
               </AlertDialogTrigger>
@@ -380,7 +400,7 @@ const UpdateBlog = () => {
                 placeholder="Enter a title"
                 name="title"
                 value={blogData.title}
-                onChange={handleChange}
+                onChange={handleChangeWithResize}
                 className={`w-full text-base ${
                   blogData.title === ""
                     ? "border-red-500 focus:ring-red-500"
@@ -400,7 +420,7 @@ const UpdateBlog = () => {
                 placeholder="Enter a subtitle"
                 name="subtitle"
                 value={blogData.subtitle}
-                onChange={handleChange}
+                onChange={handleChangeWithResize}
                 className="w-full dark:border-gray-300 text-base"
               />
             </div>
@@ -413,7 +433,7 @@ const UpdateBlog = () => {
                 placeholder="Campo libero"
                 name="campoLibero"
                 value={blogData.campoLibero}
-                onChange={handleChange}
+                onChange={handleChangeWithResize}
                 className="w-full dark:border-gray-300 text-base"
               />
             </div>
@@ -424,7 +444,7 @@ const UpdateBlog = () => {
                 placeholder="Campo libero2"
                 name="campoLibero2"
                 value={blogData.campoLibero2}
-                onChange={handleChange}
+                onChange={handleChangeWithResize}
                 className={`custom-textarea w-full text-base overflow-hidden ${
                   isIosDevice ? "resize-none" : "resize-y"
                 }`}
@@ -437,7 +457,7 @@ const UpdateBlog = () => {
               name="description"
               placeholder="Scrivi qui la descrizione del blog"
               value={blogData.description}
-              onChange={handleChange}
+              onChange={handleChangeWithResize}
               className={`custom-textarea w-full text-base overflow-hidden ${
                 isIosDevice ? "resize-none" : "resize-y"
               }`}
@@ -513,7 +533,7 @@ const UpdateBlog = () => {
           <div className="flex gap-3 items-center justify-center">
             <Button variant="outline" onClick={() => navigate(-1)}>
               Back
-            </Button> 
+            </Button>
             <Button
               className="text-purple-600 hover:text-slate-700 hover:bg-linear-to-r hover:from-purple-500 hover:to-indigo-500 border border-purple-500 hover:border-purple-700 bg-orange-200 dark:bg-orange-300"
               onClick={() => setOpenEncryptDecryptModal(true)}

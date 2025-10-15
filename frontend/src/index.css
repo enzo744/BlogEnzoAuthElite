@@ -227,7 +227,7 @@ textarea::placeholder {
   width: 100%;           /* Per sicurezza */
   box-sizing: border-box;
   line-height: 1.4;
-  overflow-y: auto;
+  overflow-y: hidden; /* importante per evitare scrollbars */
 }
 
 .dark .custom-textarea {
