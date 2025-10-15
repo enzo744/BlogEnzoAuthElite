@@ -438,7 +438,7 @@ const UpdateBlog = () => {
               placeholder="Scrivi qui la descrizione del blog"
               value={blogData.description}
               onChange={handleChange}
-              className={`w-full text-base overflow-hidden ${
+              className={`custom-textarea w-full text-base overflow-hidden ${
                 isIosDevice ? "resize-none" : "resize-y"
               }`}
             />
