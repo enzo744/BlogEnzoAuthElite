@@ -454,7 +454,9 @@ return (
           <div>
             <Label className="mb-2">Description</Label>
             <Textarea
+              ref={descriptionRef}
               name="description"
+              rows={1}
               placeholder="Scrivi qui la descrizione del blog"
               value={blogData.description}
               onChange={handleChangeWithResize}
