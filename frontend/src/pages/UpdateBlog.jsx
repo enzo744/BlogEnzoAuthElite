@@ -394,10 +394,10 @@ return (
           </div>
           <div className="flex flex-col sm:flex-row gap-4 overflow-hidden">
             <div className="flex-1 min-w-0">
-              <Label className="mb-2">Title</Label>
+              <Label className="mb-2">Titolo</Label>
               <Input
                 type="text"
-                placeholder="Enter a title"
+                placeholder="Inserisci un titolo"
                 name="title"
                 value={blogData.title}
                 onChange={handleChangeWithResize}
@@ -417,7 +417,7 @@ return (
               <Label className="mb-2">Subtitle</Label>
               <Input
                 type="text"
-                placeholder="Enter a subtitle"
+                placeholder="Inserisci un sottotitolo"
                 name="subtitle"
                 value={blogData.subtitle}
                 onChange={handleChangeWithResize}
@@ -452,12 +452,12 @@ return (
             </div>
           </div>
           <div>
-            <Label className="mb-2">Description</Label>
+            <Label className="mb-2">Descrizione</Label>
             <Textarea
               ref={descriptionRef}
               name="description"
               rows={1}
-              placeholder="Scrivi qui la descrizione del blog"
+              placeholder="Scrivi qui la descrizione del blog..."
               value={blogData.description}
               onChange={handleChangeWithResize}
               className={`custom-textarea w-full text-base overflow-hidden ${
@@ -466,10 +466,10 @@ return (
             />
           </div>
           <div>
-            <Label className="mb-2">Category</Label>
+            <Label className="mb-2">Categoria</Label>
             <Select onValueChange={selectCategory} value={blogData.category}>
               <SelectTrigger className="w-[180px] dark:border-gray-300">
-                <SelectValue placeholder="Select a category" />
+                <SelectValue placeholder="Seleziona una categoria" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -491,7 +491,7 @@ return (
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label className="mb-2">Thumbnail</Label>
+            <Label className="mb-2">Thumbnail (foto del blog)</Label>
             <div className="flex items-center gap-3">
               <Input
                 id="file"
@@ -533,7 +533,7 @@ return (
           </div>
 
           <div className="flex gap-3 items-center justify-center">
-            <Button variant="outline" onClick={() => navigate(-1)}>
+            <Button className="dark:bg-gray-400 dark:text-purple-600" variant="outline" onClick={() => navigate(-1)}>
               Back
             </Button>
             <Button

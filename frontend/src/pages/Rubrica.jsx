@@ -129,7 +129,7 @@ if (isLoading) {
               <div className="flex gap-4 items-center">
                 {/* Campo ricerca */}
                 <div className="relative no-print">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-100" />
                   <input
                     type="text"
                     placeholder="Cerca tra i tuoi blogs..."
@@ -161,7 +161,7 @@ if (isLoading) {
                   ? `Panoramica dei tuoi blog con campi compilati: ${filteredBlogs.length} blog${filteredBlogs.length > 1 ? "s" : ""}`
                   : "Nessun blog trovato con i campi compilati."}
               </TableCaption>
-              <TableHeader className="sticky top-0 bg-gray-100 z-10 border border-gray-200 dark:border-gray-400">
+              <TableHeader className="sticky top-0 bg-gray-100 dark:bg-gray-700 z-10 border border-gray-200 dark:border-gray-400">
                 <TableRow>
                   <TableHead className="w-[20%] font-bold">Titolo</TableHead>
                   <TableHead className="w-[74%] font-bold">Descrizione</TableHead>

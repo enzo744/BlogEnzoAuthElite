@@ -119,7 +119,7 @@ const CreateBlog = () => {
         </div>
         <div className="mt-5 ">
           <div>
-            <Label className="mb-2" htmlFor="blogTitle">Title</Label>
+            <Label className="mb-2" htmlFor="blogTitle">Titolo del blog</Label>
             <Input
               type="text"
               id="blogTitle" // Aggiungi un ID per accessibilità
@@ -138,7 +138,7 @@ const CreateBlog = () => {
             )}
           </div>
           <div className="mt-4 mb-5">
-            <Label className="mb-2" htmlFor="blogCategory">Category</Label>
+            <Label className="mb-2" htmlFor="blogCategory">Categoria</Label>
             <Select onValueChange={getSelectedCategory} value={category}>
               {" "}
               {/* Aggiungi value per controllare il Select */}
@@ -153,7 +153,7 @@ const CreateBlog = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Category</SelectLabel>
+                  <SelectLabel>Categoria</SelectLabel>
                   <SelectItem value="Web Development">
                     Web Development
                   </SelectItem>
